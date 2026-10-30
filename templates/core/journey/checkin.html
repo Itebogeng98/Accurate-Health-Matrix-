@@ -1,0 +1,26 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Daily check-in{% endblock %}
+{% block workspace_content %}
+<section class="journey-intro"><div><span class="journey-eyebrow">A moment for you</span><h1>How are you doing today?</h1><p>A quick reflection on your day. No scores to chase, just space to notice.</p></div><span class="journey-date">{{ today|date:'D, d M' }}</span></section>
+<div class="journey-columns">
+  <section class="journey-panel">
+    <div class="journey-panel-title"><h2>{% if entry %}Your check-in today{% else %}Let's check in{% endif %}</h2>{% if entry %}<span class="journey-badge">Saved today</span>{% endif %}</div>
+    <p class="journey-muted">{% if entry %}You can update today's entry here.{% else %}Take a moment to capture how you feel.{% endif %}</p>
+    <form method="post" class="journey-form">{% csrf_token %}{% include 'core/journey/fields.html' %}<button class="btn btn-primary field-wide" type="submit">{% if entry %}Update today's check-in{% else %}Save my check-in{% endif %}</button></form>
+    <p class="journey-footnote">Your personal reflection, not a medical assessment. Only your account can open these entries.</p>
+  </section>
+  <aside class="journey-panel journey-reflection">
+    <span class="journey-symbol" aria-hidden="true">&#10022;</span><h2>Showing up counts.</h2><p>Some days will feel different from others. Record what feels true for you, and return whenever it helps.</p>
+    <div class="journey-count"><strong>{{ total_checkins }}</strong><span>check-in{{ total_checkins|pluralize }} recorded</span></div>
+    {% if milestone %}<span class="journey-badge">{{ milestone }} milestone</span>{% endif %}
+    <a href="{% url 'health_timeline' %}?kind=checkins">See your journey &rarr;</a>
+  </aside>
+</div>
+<section class="journey-panel" id="checkin-history">
+  <div class="journey-panel-title"><h2>Your recent reflections</h2><span class="journey-muted">{{ history.paginator.count }} entries</span></div>
+  {% for checkin in history %}
+  <article class="checkin-row"><div><strong>{{ checkin.date|date:'d M Y' }}</strong><span class="mood-tag mood-{{ checkin.mood }}">{{ checkin.get_mood_display }}</span></div><p>{{ checkin.sleep_hours }} h sleep <span aria-hidden="true">&middot;</span> {{ checkin.activity_minutes }} min movement</p>{% if checkin.note %}<details><summary>Personal note</summary><p>{{ checkin.note }}</p></details>{% endif %}</article>
+  {% empty %}<div class="journey-empty"><h3>Your story starts here.</h3><p>Save your first check-in above. Your reflections will appear here over time.</p></div>{% endfor %}
+  {% if history.has_other_pages %}<nav class="compact-pagination" aria-label="Check-in history pages">{% if history.has_previous %}<a href="?page={{ history.previous_page_number }}#checkin-history">&larr; Previous</a>{% endif %}<span>{{ history.number }} / {{ history.paginator.num_pages }}</span>{% if history.has_next %}<a href="?page={{ history.next_page_number }}#checkin-history">Next &rarr;</a>{% endif %}</nav>{% endif %}
+</section>
+{% endblock %}

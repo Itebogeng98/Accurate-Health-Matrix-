@@ -1,0 +1,36 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Components
+component "config\nsettings / URL root / WSGI / ASGI" as Config
+component "health_ai.urls + views" as Views
+component "forms + serializers" as Forms
+component "models + admin" as Models
+component "services" as Services
+component "templates + static CSS" as Templates
+component "ml: prediction, preprocessing,\nmodel_loader, recommendation" as ML
+component "scripts/train_models.py" as Train
+component "legacy app wrappers + migrations" as Legacy
+component "Django / DRF" as Framework
+component "pandas / sklearn / joblib" as Libraries
+artifact "CSV inputs" as CSV
+artifact "Joblib pipelines" as Artifacts
+Config --> Views
+Views --> Forms
+Views --> Models
+Views --> Services
+Views --> Templates
+Views --> ML
+Views --> Train : staff retrain endpoint
+Services --> Models
+Legacy --> Models : compatibility exports
+Views --> Framework
+Models --> Framework
+ML --> Libraries
+Train --> Libraries
+Train --> CSV : reads
+Train --> Artifacts : writes
+ML --> Artifacts : reads if present
+@enduml

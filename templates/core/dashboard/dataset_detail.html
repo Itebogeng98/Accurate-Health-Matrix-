@@ -1,0 +1,70 @@
+{% extends 'base/patient_workspace.html' %}
+{% load static %}
+{% block workspace_title %}Dataset viewer{% endblock %}
+{% block workspace_content %}
+
+
+    <section class="dataset-hero">
+      <div>
+        <span class="matrix-kicker">{{ selected_dataset.source }}</span>
+        <h2>{{ selected_dataset.filename }}</h2>
+        <p>{% if preview.exists %}Showing the first {{ preview.rows|length }} rows from {{ preview.source_mode }}.{% else %}This dataset is expected by the system, but AHM could not load it yet.{% endif %}</p>
+      </div>
+      <div class="dataset-summary">
+        <article><span>Status</span><strong>{% if preview.exists %}Loaded{% else %}{{ selected_dataset.status }}{% endif %}</strong></article>
+        <article><span>Rows</span><strong>{{ preview.total_rows }}</strong></article>
+        <article><span>Columns</span><strong>{{ preview.columns|length }}</strong></article>
+        <article><span>Source</span><strong>{{ preview.source_mode }}</strong></article>
+      </div>
+    </section>
+
+    {% if preview.exists %}
+      <section class="matrix-panel dataset-panel">
+        <div class="panel-head">
+          <span class="matrix-kicker">Columns</span>
+          <h3>Dataset Structure</h3>
+        </div>
+        <div class="column-cloud">
+          {% for column in preview.columns %}
+            <span>{{ column }}</span>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="matrix-panel dataset-panel">
+        <div class="panel-head">
+          <span class="matrix-kicker">Preview</span>
+          <h3>First Rows</h3>
+        </div>
+        <div class="matrix-table-wrap">
+          <table class="matrix-table dataset-table">
+            <tr>
+              {% for column in preview.columns %}
+                <th>{{ column }}</th>
+              {% endfor %}
+            </tr>
+            {% for row in preview.rows %}
+              <tr>
+                {% for value in row %}
+                  <td>{{ value }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </section>
+    {% else %}
+      <section class="matrix-panel dataset-panel missing-dataset-panel">
+        <div class="panel-head">
+          <span class="matrix-kicker">Missing file</span>
+          <h3>Add this dataset</h3>
+        </div>
+        {% if preview.error %}
+          <p>{{ preview.error }}</p>
+        {% endif %}
+        <p>For API mode, add your Kaggle credentials to <code>.env</code>:</p>
+        <code>KAGGLE_USERNAME=your_kaggle_username<br>KAGGLE_KEY=your_kaggle_api_key</code>
+        <p class="dataset-help">AHM will then fetch <strong>{{ selected_dataset.filename }}</strong> from Kaggle API and preview it here without storing the CSV in the project.</p>
+      </section>
+    {% endif %}
+{% endblock %}

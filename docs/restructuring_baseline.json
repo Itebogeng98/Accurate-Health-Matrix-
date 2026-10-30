@@ -1,0 +1,577 @@
+{
+  "tables": {
+    "accounts_appointment": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "accounts_customuser": {
+      "count": 2,
+      "sha256": "29936ccb6d6359f03430de3b76701586025a2d8aaa38cc500a8d9b471a801395"
+    },
+    "accounts_customuser_groups": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "accounts_customuser_user_permissions": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "accounts_notification": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "accounts_role": {
+      "count": 3,
+      "sha256": "53cd76eff5e82fb549885d07108448ca5e9bb7eab1f69020e67d6313bc0bd215"
+    },
+    "auth_group": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth_group_permissions": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth_permission": {
+      "count": 60,
+      "sha256": "736214ab445a330f989ce68818b2a42b3ed2b2e74c9a90db7951a42f094d5313"
+    },
+    "auth_user": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth_user_groups": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth_user_user_permissions": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "authtoken_token": {
+      "count": 2,
+      "sha256": "bd94078c23d9593d4e9683c910ab0e1c092180a9984fd05ddb8840c36e1da05e"
+    },
+    "django_admin_log": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "django_content_type": {
+      "count": 15,
+      "sha256": "1854f29f5a29eb2b7afb7536a1ff321aa0c24aff4fd5e35ec44d38515a7e64d9"
+    },
+    "django_migrations": {
+      "count": 30,
+      "sha256": "d0dfa1a41a6b08e38454dc82fc90ac32239c6d398d3500f9cc27fb05d5b7715c"
+    },
+    "django_session": {
+      "count": 22,
+      "sha256": "eb504b3c08a94e9f8610d8c7ea08271b6a41a6b3a0957e311539a1c0c610ee38"
+    },
+    "predictions_predictionrecord": {
+      "count": 11,
+      "sha256": "cbda4570c7490002954b9008a5dc53a976008c77066d9f68e9b8554432956243"
+    },
+    "wellness_doctorcontact": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "wellness_exerciseplan": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "models": {
+    "admin.logentry": {
+      "table": "django_admin_log",
+      "fields": [
+        "('django.db.models.AutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.DateTimeField', [], {'verbose_name': 'action time', 'default': <function now at 0x0000019D934D6140>, 'editable': False})",
+        "('django.db.models.ForeignKey', [], {'verbose_name': 'user', 'on_delete': <function CASCADE at 0x0000019D938B6FB0>, 'to': 'accounts.customuser'})",
+        "('django.db.models.ForeignKey', [], {'verbose_name': 'content type', 'blank': True, 'null': True, 'on_delete': <function SET_NULL at 0x0000019D938B7530>, 'to': 'contenttypes.contenttype'})",
+        "('django.db.models.TextField', [], {'verbose_name': 'object id', 'blank': True, 'null': True})",
+        "('django.db.models.CharField', [], {'verbose_name': 'object repr', 'max_length': 200})",
+        "('django.db.models.PositiveSmallIntegerField', [], {'verbose_name': 'action flag', 'choices': [(1, 'Addition'), (2, 'Change'), (3, 'Deletion')]})",
+        "('django.db.models.TextField', [], {'verbose_name': 'change message', 'blank': True})"
+      ]
+    },
+    "auth.permission": {
+      "table": "auth_permission",
+      "fields": [
+        "('django.db.models.AutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.CharField', [], {'verbose_name': 'name', 'max_length': 255})",
+        "('django.db.models.ForeignKey', [], {'verbose_name': 'content type', 'on_delete': <function CASCADE at 0x0000019D938B6FB0>, 'to': 'contenttypes.contenttype'})",
+        "('django.db.models.CharField', [], {'verbose_name': 'codename', 'max_length': 100})"
+      ]
+    },
+    "auth.group": {
+      "table": "auth_group",
+      "fields": [
+        "('django.db.models.AutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.CharField', [], {'verbose_name': 'name', 'max_length': 150, 'unique': True})",
+        "('django.db.models.ManyToManyField', [], {'verbose_name': 'permissions', 'blank': True, 'to': 'auth.permission'})"
+      ]
+    },
+    "contenttypes.contenttype": {
+      "table": "django_content_type",
+      "fields": [
+        "('django.db.models.AutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.CharField', [], {'max_length': 100})",
+        "('django.db.models.CharField', [], {'verbose_name': 'python model class name', 'max_length': 100})"
+      ]
+    },
+    "sessions.session": {
+      "table": "django_session",
+      "fields": [
+        "('django.db.models.CharField', [], {'verbose_name': 'session key', 'primary_key': True, 'max_length': 40, 'serialize': False})",
+        "('django.db.models.TextField', [], {'verbose_name': 'session data'})",
+        "('django.db.models.DateTimeField', [], {'verbose_name': 'expire date', 'db_index': True})"
+      ]
+    },
+    "authtoken.token": {
+      "table": "authtoken_token",
+      "fields": [
+        "('django.db.models.CharField', [], {'verbose_name': 'Key', 'primary_key': True, 'max_length': 40, 'serialize': False})",
+        "('django.db.models.OneToOneField', [], {'verbose_name': 'User', 'related_name': 'auth_token', 'on_delete': <function CASCADE at 0x0000019D938B6FB0>, 'to': 'accounts.customuser'})",
+        "('django.db.models.DateTimeField', [], {'verbose_name': 'Created', 'auto_now_add': True})"
+      ]
+    },
+    "authtoken.tokenproxy": {
+      "table": "authtoken_token",
+      "fields": []
+    },
+    "accounts.role": {
+      "table": "accounts_role",
+      "fields": [
+        "('django.db.models.BigAutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.CharField', [], {'max_length': 100, 'unique': True})"
+      ]
+    },
+    "accounts.customuser": {
+      "table": "accounts_customuser",
+      "fields": [
+        "('django.db.models.BigAutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.CharField', [], {'verbose_name': 'password', 'max_length': 128})",
+        "('django.db.models.DateTimeField', [], {'verbose_name': 'last login', 'blank': True, 'null': True})",
+        "('django.db.models.BooleanField', [], {'verbose_name': 'superuser status', 'default': False, 'help_text': 'Designates that this user has all permissions without explicitly assigning them.'})",
+        "('django.db.models.EmailField', [], {'max_length': 254, 'unique': True})",
+        "('django.db.models.CharField', [], {'max_length': 100})",
+        "('django.db.models.CharField', [], {'max_length': 100})",
+        "('django.db.models.ForeignKey', [], {'on_delete': <function PROTECT at 0x0000019D938B7320>, 'to': 'accounts.role'})",
+        "('django.db.models.CharField', [], {'max_length': 14, 'blank': True, 'null': True})",
+        "('django.db.models.DateTimeField', [], {'default': <function now at 0x0000019D934D6140>})",
+        "('django.db.models.BooleanField', [], {'default': True})",
+        "('django.db.models.BooleanField', [], {'default': False})",
+        "('django.db.models.BooleanField', [], {'default': False})",
+        "('django.db.models.CharField', [], {'max_length': 100, 'blank': True, 'null': True})",
+        "('django.db.models.ManyToManyField', [], {'verbose_name': 'groups', 'blank': True, 'help_text': 'The groups this user belongs to.', 'related_name': 'customuser_set', 'to': 'auth.group'})",
+        "('django.db.models.ManyToManyField', [], {'verbose_name': 'user permissions', 'blank': True, 'help_text': 'Specific permissions for this user.', 'related_name': 'customuser_set', 'to': 'auth.permission'})"
+      ]
+    },
+    "accounts.appointment": {
+      "table": "accounts_appointment",
+      "fields": [
+        "('django.db.models.BigAutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.ForeignKey', [], {'related_name': 'appointments', 'on_delete': <function CASCADE at 0x0000019D938B6FB0>, 'to': 'accounts.customuser'})",
+        "('django.db.models.CharField', [], {'max_length': 160})",
+        "('django.db.models.DateField', [], {})",
+        "('django.db.models.TextField', [], {'blank': True})",
+        "('django.db.models.CharField', [], {'max_length': 20, 'default': 'pending', 'choices': [('pending', 'Pending'), ('approved', 'Approved'), ('completed', 'Completed'), ('cancelled', 'Cancelled')]})",
+        "('django.db.models.DateTimeField', [], {'auto_now_add': True})"
+      ]
+    },
+    "accounts.notification": {
+      "table": "accounts_notification",
+      "fields": [
+        "('django.db.models.BigAutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.ForeignKey', [], {'related_name': 'notifications', 'on_delete': <function CASCADE at 0x0000019D938B6FB0>, 'to': 'accounts.customuser'})",
+        "('django.db.models.CharField', [], {'max_length': 120})",
+        "('django.db.models.TextField', [], {})",
+        "('django.db.models.BooleanField', [], {'default': False})",
+        "('django.db.models.DateTimeField', [], {'auto_now_add': True})"
+      ]
+    },
+    "predictions.predictionrecord": {
+      "table": "predictions_predictionrecord",
+      "fields": [
+        "('django.db.models.BigAutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.ForeignKey', [], {'blank': True, 'null': True, 'on_delete': <function CASCADE at 0x0000019D938B6FB0>, 'to': 'accounts.customuser'})",
+        "('django.db.models.CharField', [], {'max_length': 30, 'choices': [('stroke', 'Stroke'), ('lung_cancer', 'Lung Cancer')]})",
+        "('django.db.models.CharField', [], {'max_length': 20})",
+        "('django.db.models.FloatField', [], {'default': 0})",
+        "('django.db.models.JSONField', [], {'default': <class 'dict'>})",
+        "('django.db.models.TextField', [], {'blank': True})",
+        "('django.db.models.DateTimeField', [], {'auto_now_add': True})"
+      ]
+    },
+    "wellness.doctorcontact": {
+      "table": "wellness_doctorcontact",
+      "fields": [
+        "('django.db.models.BigAutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.CharField', [], {'max_length': 120})",
+        "('django.db.models.CharField', [], {'max_length': 40, 'choices': [('neurologist', 'Neurologist / Stroke'), ('pulmonologist', 'Pulmonologist / Lung'), ('gp', 'General Practitioner')]})",
+        "('django.db.models.CharField', [], {'max_length': 80, 'default': 'Gauteng'})",
+        "('django.db.models.CharField', [], {'max_length': 80, 'blank': True})",
+        "('django.db.models.CharField', [], {'max_length': 255, 'blank': True})",
+        "('django.db.models.CharField', [], {'max_length': 80, 'blank': True})",
+        "('django.db.models.EmailField', [], {'max_length': 254, 'blank': True})",
+        "('django.db.models.URLField', [], {'blank': True})",
+        "('django.db.models.TextField', [], {'blank': True})"
+      ]
+    },
+    "wellness.exerciseplan": {
+      "table": "wellness_exerciseplan",
+      "fields": [
+        "('django.db.models.BigAutoField', [], {'verbose_name': 'ID', 'primary_key': True, 'serialize': False, 'auto_created': True})",
+        "('django.db.models.CharField', [], {'max_length': 120})",
+        "('django.db.models.CharField', [], {'max_length': 40, 'choices': [('stroke', 'Stroke Risk'), ('lung_cancer', 'Lung Health'), ('general', 'General Wellness')]})",
+        "('django.db.models.CharField', [], {'max_length': 50, 'default': 'Beginner'})",
+        "('django.db.models.CharField', [], {'max_length': 80, 'default': '10-20 minutes'})",
+        "('django.db.models.TextField', [], {})",
+        "('django.db.models.TextField', [], {'blank': True})"
+      ]
+    }
+  },
+  "routes": [
+    [
+      "admin/",
+      "index"
+    ],
+    [
+      "admin/login/",
+      "login"
+    ],
+    [
+      "admin/logout/",
+      "logout"
+    ],
+    [
+      "admin/password_change/",
+      "password_change"
+    ],
+    [
+      "admin/password_change/done/",
+      "password_change_done"
+    ],
+    [
+      "admin/autocomplete/",
+      "autocomplete"
+    ],
+    [
+      "admin/jsi18n/",
+      "jsi18n"
+    ],
+    [
+      "admin/r/<path:content_type_id>/<path:object_id>/",
+      "view_on_site"
+    ],
+    [
+      "admin/auth/group/",
+      "auth_group_changelist"
+    ],
+    [
+      "admin/auth/group/add/",
+      "auth_group_add"
+    ],
+    [
+      "admin/auth/group/<path:object_id>/history/",
+      "auth_group_history"
+    ],
+    [
+      "admin/auth/group/<path:object_id>/delete/",
+      "auth_group_delete"
+    ],
+    [
+      "admin/auth/group/<path:object_id>/change/",
+      "auth_group_change"
+    ],
+    [
+      "admin/auth/group/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/authtoken/tokenproxy/",
+      "authtoken_tokenproxy_changelist"
+    ],
+    [
+      "admin/authtoken/tokenproxy/add/",
+      "authtoken_tokenproxy_add"
+    ],
+    [
+      "admin/authtoken/tokenproxy/<path:object_id>/history/",
+      "authtoken_tokenproxy_history"
+    ],
+    [
+      "admin/authtoken/tokenproxy/<path:object_id>/delete/",
+      "authtoken_tokenproxy_delete"
+    ],
+    [
+      "admin/authtoken/tokenproxy/<path:object_id>/change/",
+      "authtoken_tokenproxy_change"
+    ],
+    [
+      "admin/authtoken/tokenproxy/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/accounts/role/",
+      "accounts_role_changelist"
+    ],
+    [
+      "admin/accounts/role/add/",
+      "accounts_role_add"
+    ],
+    [
+      "admin/accounts/role/<path:object_id>/history/",
+      "accounts_role_history"
+    ],
+    [
+      "admin/accounts/role/<path:object_id>/delete/",
+      "accounts_role_delete"
+    ],
+    [
+      "admin/accounts/role/<path:object_id>/change/",
+      "accounts_role_change"
+    ],
+    [
+      "admin/accounts/role/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/accounts/customuser/<id>/password/",
+      "auth_user_password_change"
+    ],
+    [
+      "admin/accounts/customuser/",
+      "accounts_customuser_changelist"
+    ],
+    [
+      "admin/accounts/customuser/add/",
+      "accounts_customuser_add"
+    ],
+    [
+      "admin/accounts/customuser/<path:object_id>/history/",
+      "accounts_customuser_history"
+    ],
+    [
+      "admin/accounts/customuser/<path:object_id>/delete/",
+      "accounts_customuser_delete"
+    ],
+    [
+      "admin/accounts/customuser/<path:object_id>/change/",
+      "accounts_customuser_change"
+    ],
+    [
+      "admin/accounts/customuser/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/accounts/appointment/",
+      "accounts_appointment_changelist"
+    ],
+    [
+      "admin/accounts/appointment/add/",
+      "accounts_appointment_add"
+    ],
+    [
+      "admin/accounts/appointment/<path:object_id>/history/",
+      "accounts_appointment_history"
+    ],
+    [
+      "admin/accounts/appointment/<path:object_id>/delete/",
+      "accounts_appointment_delete"
+    ],
+    [
+      "admin/accounts/appointment/<path:object_id>/change/",
+      "accounts_appointment_change"
+    ],
+    [
+      "admin/accounts/appointment/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/accounts/notification/",
+      "accounts_notification_changelist"
+    ],
+    [
+      "admin/accounts/notification/add/",
+      "accounts_notification_add"
+    ],
+    [
+      "admin/accounts/notification/<path:object_id>/history/",
+      "accounts_notification_history"
+    ],
+    [
+      "admin/accounts/notification/<path:object_id>/delete/",
+      "accounts_notification_delete"
+    ],
+    [
+      "admin/accounts/notification/<path:object_id>/change/",
+      "accounts_notification_change"
+    ],
+    [
+      "admin/accounts/notification/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/predictions/predictionrecord/",
+      "predictions_predictionrecord_changelist"
+    ],
+    [
+      "admin/predictions/predictionrecord/add/",
+      "predictions_predictionrecord_add"
+    ],
+    [
+      "admin/predictions/predictionrecord/<path:object_id>/history/",
+      "predictions_predictionrecord_history"
+    ],
+    [
+      "admin/predictions/predictionrecord/<path:object_id>/delete/",
+      "predictions_predictionrecord_delete"
+    ],
+    [
+      "admin/predictions/predictionrecord/<path:object_id>/change/",
+      "predictions_predictionrecord_change"
+    ],
+    [
+      "admin/predictions/predictionrecord/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/wellness/doctorcontact/",
+      "wellness_doctorcontact_changelist"
+    ],
+    [
+      "admin/wellness/doctorcontact/add/",
+      "wellness_doctorcontact_add"
+    ],
+    [
+      "admin/wellness/doctorcontact/<path:object_id>/history/",
+      "wellness_doctorcontact_history"
+    ],
+    [
+      "admin/wellness/doctorcontact/<path:object_id>/delete/",
+      "wellness_doctorcontact_delete"
+    ],
+    [
+      "admin/wellness/doctorcontact/<path:object_id>/change/",
+      "wellness_doctorcontact_change"
+    ],
+    [
+      "admin/wellness/doctorcontact/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/wellness/exerciseplan/",
+      "wellness_exerciseplan_changelist"
+    ],
+    [
+      "admin/wellness/exerciseplan/add/",
+      "wellness_exerciseplan_add"
+    ],
+    [
+      "admin/wellness/exerciseplan/<path:object_id>/history/",
+      "wellness_exerciseplan_history"
+    ],
+    [
+      "admin/wellness/exerciseplan/<path:object_id>/delete/",
+      "wellness_exerciseplan_delete"
+    ],
+    [
+      "admin/wellness/exerciseplan/<path:object_id>/change/",
+      "wellness_exerciseplan_change"
+    ],
+    [
+      "admin/wellness/exerciseplan/<path:object_id>/",
+      null
+    ],
+    [
+      "admin/^(?P<app_label>auth|authtoken|accounts|predictions|wellness)/$",
+      "app_list"
+    ],
+    [
+      "admin/(?P<url>.*)$",
+      null
+    ],
+    [
+      "",
+      "home"
+    ],
+    [
+      "accounts/api/token/",
+      "obtain_token"
+    ],
+    [
+      "accounts/api/signup/",
+      "signup_api"
+    ],
+    [
+      "accounts/register/",
+      "register"
+    ],
+    [
+      "accounts/login/",
+      "login"
+    ],
+    [
+      "accounts/profile/",
+      "profile"
+    ],
+    [
+      "accounts/logout/",
+      "logout"
+    ],
+    [
+      "predict/api/stroke/",
+      "stroke_prediction_api"
+    ],
+    [
+      "predict/api/lung/",
+      "lung_prediction_api"
+    ],
+    [
+      "predict/api/admin/retrain-models/",
+      "retrain_models_api"
+    ],
+    [
+      "predict/stroke/",
+      "stroke_predict"
+    ],
+    [
+      "predict/lung-cancer/",
+      "lung_predict"
+    ],
+    [
+      "diet/",
+      "diet_home"
+    ],
+    [
+      "dashboard/",
+      "dashboard"
+    ],
+    [
+      "dashboard/appointments/",
+      "appointments"
+    ],
+    [
+      "dashboard/notifications/",
+      "notifications"
+    ],
+    [
+      "dashboard/datasets/<slug:dataset_slug>/",
+      "dashboard_dataset"
+    ],
+    [
+      "wellness/doctors/",
+      "doctors"
+    ],
+    [
+      "wellness/exercises/",
+      "exercises"
+    ],
+    [
+      "wellness/data-tables/",
+      "data_tables"
+    ]
+  ]
+}

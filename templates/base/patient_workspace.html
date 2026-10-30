@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% block nav_class %}{% if user.is_authenticated %}dashboard-global-hidden{% endif %}{% endblock %}
+{% block footer_class %}{% if user.is_authenticated %}dashboard-global-hidden{% endif %}{% endblock %}
+{% block main_class %}{% if user.is_authenticated %}dashboard-shell{% endif %}{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="matrix-dashboard dashboard-refresh">
+  {% include 'base/patient_sidebar.html' %}
+  <div class="matrix-main">
+    <header class="matrix-topbar">
+      <div><span class="matrix-kicker">Patient workspace</span><h1>{% block workspace_title %}Dashboard{% endblock %}</h1></div>
+      <div class="topbar-cluster"><div class="topbar-user">
+        <span>{{ user.first_name|slice:':1'|upper }}{{ user.last_name|slice:':1'|upper }}</span>
+        <div><strong><a href="{% url 'profile' %}">{{ user.get_full_name|default:user.email }}</a></strong><small>{{ user.email }}</small></div>
+      </div></div>
+    </header>
+{% endif %}
+<div class="workspace-content">{% block workspace_content %}{% endblock %}</div>
+{% if user.is_authenticated %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

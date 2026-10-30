@@ -1,0 +1,27 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Exercise Plan{% endblock %}
+{% block workspace_content %}
+<section class="page-head">
+  <span class="hero-eyebrow">Movement plan</span>
+  <h1>Exercise Recommendations</h1>
+  <p>Simple beginner-friendly routines that make the system more useful after prediction.</p>
+  <div class="actions">
+    <a class="btn {% if category == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?category=all" {% if category == 'all' %}aria-current="true"{% endif %}>All</a>
+    <a class="btn {% if category == 'stroke' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?category=stroke" {% if category == 'stroke' %}aria-current="true"{% endif %}>Stroke Risk</a>
+    <a class="btn {% if category == 'lung' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?category=lung" {% if category == 'lung' %}aria-current="true"{% endif %}>Lung Health</a>
+    <a class="btn {% if category == 'general' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?category=general" {% if category == 'general' %}aria-current="true"{% endif %}>General</a>
+  </div>
+</section>
+<div class="card-grid">
+  {% for e in exercises %}
+  <article class="info-card">
+    <span class="pill">{{ e.category }}</span>
+    <h2 class="mt-3">{{ e.title }}</h2>
+    <p><strong>Difficulty:</strong> {{ e.difficulty }}</p>
+    <p><strong>Duration:</strong> {{ e.duration }}</p>
+    <details class="card-details"><summary>How to do it</summary><p>{{ e.instructions }}</p></details>
+    <p class="safety"><strong>Safety:</strong> {{ e.safety_note }}</p>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Sequence
+actor "Patient / approved user" as U
+boundary "stroke.html / browser" as UI
+control "stroke_predict" as V
+control "StrokePredictionForm" as F
+control "predict_stroke" as P
+control "_load_model / _predict_with_pipeline" as M
+control "recommend_diet" as R
+control "_save_prediction" as S
+database "PredictionRecord / database" as D
+U -> UI : submit indicators
+UI -> V : POST /predict/stroke/
+alt unauthenticated
+ V --> UI : 302 login
+else authenticated
+ V -> F : is_valid()
+ alt invalid fields
+  F --> V : errors
+  V --> UI : 200 form with errors
+ else valid
+  F --> V : cleaned_data
+  V -> P : predict_stroke(data)
+  P -> M : load Joblib if file exists
+  alt compatible model present
+   M --> P : predict_proba(DataFrame)[0][1]
+  else absent model or pipeline failure
+   M --> P : None
+   P -> P : heuristic score
+  else joblib deserialisation fails
+   break deserialisation failure ends request
+    M --> V : unhandled exception (500)
+   end
+  end
+  P --> V : probability, risk_label
+  V -> R : recommend_diet(disease, risk)
+  R --> V : fixed food list
+  V -> S : save cleaned data + result
+  S -> D : objects.create()
+  alt saved
+   D --> S : record
+   S --> V : record
+  else OperationalError / ProgrammingError
+   S --> V : None
+   V -> V : warning; result still displayed
+  end
+  V --> UI : 200 result, advice, foods
+ end
+end
+@enduml

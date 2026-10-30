@@ -1,0 +1,66 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam defaultFontColor #17334A
+skinparam ArrowColor #42647A
+skinparam ArrowFontSize 13
+skinparam roundcorner 8
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F0F7FA
+skinparam classBorderColor #42647A
+skinparam componentBackgroundColor #F0F7FA
+skinparam componentBorderColor #42647A
+skinparam rectangleBorderColor #42647A
+skinparam usecaseBackgroundColor #F0F7FA
+skinparam usecaseBorderColor #42647A
+skinparam noteBackgroundColor #FFF6DE
+skinparam noteBorderColor #BCA76D
+skinparam noteFontSize 14
+skinparam packageStyle rectangle
+left to right direction
+actor "Patient" as Patient
+actor "Staff administrator" as Admin
+actor "Developer / data analyst" as Developer
+actor "Kaggle download API" as Kaggle
+rectangle "AHM system boundary" {
+ usecase "UC01\nRegister / log in" as UC01
+ usecase "UC02\nSubmit stroke / lung inputs\nand receive risk result" as UC02
+ usecase "UC03\nView dashboard / own history" as UC03
+ usecase "UC04\nUpdate own profile" as UC04
+ usecase "UC05\nRequest appointment" as UC05
+ usecase "UC06\nRead / mark own notifications" as UC06
+ usecase "UC07\nPreview dataset" as UC07
+ usecase "UC08\nBrowse diet / wellness" as UC08
+ usecase "UC09\nManage records / approve users" as UC09
+ usecase "UC10\nTrigger model retraining" as UC10
+}
+Patient -- UC01
+Patient -- UC02
+Patient -- UC03
+Patient -- UC04
+Patient -- UC05
+Patient -- UC06
+Patient -- UC07
+Patient -- UC08
+Admin -- UC09
+Admin -- UC10
+Developer -- UC10 : local training script
+UC07 -- Kaggle : conditional ZIP retrieval
+note right of UC01
+Browser login checks account approval.
+Protected patient functions require authentication.
+Diet page is public; most wellness pages are protected.
+A stored Health Professional role has no separate
+implemented consultation workflow.
+end note
+note right of UC10
+Admin endpoint requires is_staff.
+Training needs local CSVs; dataset preview
+is not an automatic training-data download.
+end note
+@enduml

@@ -1,0 +1,78 @@
+{
+  "dataset": "healthcare-dataset-stroke-data.csv",
+  "dataset_sha256": "644d473b05d2797006bd94865e4f8bb057f0c721617911613c82c8fcfc707420",
+  "trained_at_utc": "2026-10-05T09:55:48.642891+00:00",
+  "original_rows": 5110,
+  "duplicate_rows_removed": 0,
+  "train_rows": 4088,
+  "test_rows": 1022,
+  "features": [
+    "gender",
+    "age",
+    "hypertension",
+    "heart_disease",
+    "ever_married",
+    "work_type",
+    "residence_type",
+    "avg_glucose_level",
+    "bmi",
+    "smoking_status"
+  ],
+  "class_counts": {
+    "0": 4861,
+    "1": 249
+  },
+  "random_state": 42,
+  "accuracy": 0.9354207436399217,
+  "balanced_accuracy": 0.5486831275720165,
+  "roc_auc": 0.7754526748971194,
+  "average_precision": 0.13299065502139074,
+  "confusion_matrix_labels": [
+    0,
+    1
+  ],
+  "confusion_matrix": [
+    [
+      950,
+      22
+    ],
+    [
+      44,
+      6
+    ]
+  ],
+  "classification_report": {
+    "0": {
+      "precision": 0.9557344064386318,
+      "recall": 0.977366255144033,
+      "f1-score": 0.9664292980671414,
+      "support": 972.0
+    },
+    "1": {
+      "precision": 0.21428571428571427,
+      "recall": 0.12,
+      "f1-score": 0.15384615384615385,
+      "support": 50.0
+    },
+    "accuracy": 0.9354207436399217,
+    "macro avg": {
+      "precision": 0.5850100603621731,
+      "recall": 0.5486831275720165,
+      "f1-score": 0.5601377259566476,
+      "support": 1022.0
+    },
+    "weighted avg": {
+      "precision": 0.9194600085837923,
+      "recall": 0.9354207436399217,
+      "f1-score": 0.9266747411091676,
+      "support": 1022.0
+    }
+  },
+  "limitation": "Internal dataset holdout only; uncalibrated scores, not clinically validated probabilities.",
+  "package_versions": {
+    "scikit-learn": "1.9.0",
+    "pandas": "3.0.4",
+    "numpy": "2.5.0",
+    "joblib": "1.5.3"
+  }
+}

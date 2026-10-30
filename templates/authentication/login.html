@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<section class="auth-shell art-auth login-art">
+    <div class="container">
+        <div class="auth-layout auth-layout-login">
+            <aside class="auth-panel">
+                <span class="hero-kicker">Welcome back</span>
+                <h1>Your health dashboard is ready.</h1>
+                <p>Sign in to continue predictions, review recent reports, and move from risk insight to action.</p>
+                <div class="auth-metric">
+                    <strong>4</strong>
+                    <span>steps from prediction to practical wellness support</span>
+                </div>
+            </aside>
+
+            <div class="auth-card auth-card-compact">
+                <div class="auth-card-head">
+                    <span class="hero-kicker dark">Secure access</span>
+                    <h2>Login</h2>
+                    <p>Use your approved account email and password.</p>
+                </div>
+                <form method="post" class="auth-form">
+                    {% csrf_token %}
+                    <div class="field-group">
+                        <label class="form-label" for="id_username">Email address</label>
+                        <input class="form-control" id="id_username" type="email" name="username" placeholder="you@example.com" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="form-label" for="id_password">Password</label>
+                        <input class="form-control" id="id_password" type="password" name="password" placeholder="Your password" required>
+                    </div>
+                    <button class="btn btn-primary auth-submit" type="submit">Login</button>
+                </form>
+                <p class="auth-switch">Need an account? <a href="{% url 'register' %}">Create one</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

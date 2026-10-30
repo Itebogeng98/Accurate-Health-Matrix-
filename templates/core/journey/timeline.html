@@ -1,0 +1,14 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Health timeline{% endblock %}
+{% block workspace_content %}
+<section class="journey-intro"><div><span class="journey-eyebrow">Your journey, in one place</span><h1>Look at the steps you've taken.</h1><p>Checks, reflections, personal goals and appointment requests. Each part of your story.</p></div><a class="btn btn-primary" href="{% url 'daily_checkin' %}">Check in today</a></section>
+<nav class="journey-filters" aria-label="Timeline filters">{% for key, label in filters %}<a href="?kind={{ key }}" {% if selected == key %}aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
+<section class="journey-panel timeline-panel" aria-label="Your health activity">
+  <p class="journey-muted">{{ events.paginator.count }} recorded event{{ events.paginator.count|pluralize }}. Appointment statuses reflect their current state.</p>
+  <ol class="health-timeline">
+    {% for event in events %}<li class="timeline-event event-{{ event.kind }}"><span class="timeline-dot" aria-hidden="true"></span><div><time datetime="{{ event.date|date:'c' }}">{{ event.date|date:'d M Y' }}</time><h2>{{ event.title }}</h2><p>{{ event.detail }}</p><a href="{{ event.url }}">{{ event.label }} &rarr;</a></div></li>
+    {% empty %}<li class="journey-empty"><h2>A fresh page in your journey.</h2><p>{% if selected == 'all' %}Start with a daily check-in or create a personal goal. Your saved health checks will appear here too.{% else %}There are no events in this category yet. Try another filter or record your next step.{% endif %}</p><a href="{% url 'personal_goals' %}">Explore personal goals &rarr;</a></li>{% endfor %}
+  </ol>
+  {% if events.has_other_pages %}<nav class="compact-pagination" aria-label="Timeline pages">{% if events.has_previous %}<a href="?kind={{ selected }}&amp;page={{ events.previous_page_number }}">&larr; Previous</a>{% endif %}<span>Page {{ events.number }} of {{ events.paginator.num_pages }}</span>{% if events.has_next %}<a href="?kind={{ selected }}&amp;page={{ events.next_page_number }}">Next &rarr;</a>{% endif %}</nav>{% endif %}
+</section>
+{% endblock %}

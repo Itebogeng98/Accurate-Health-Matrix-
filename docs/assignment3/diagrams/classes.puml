@@ -1,0 +1,88 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Classes
+hide empty members
+class Role {
+ id: BigAutoField
+ role: CharField(100) {unique}
+ __str__()
+}
+class CustomUser {
+ id: BigAutoField
+ email: EmailField {unique}
+ first_name, last_name: CharField(100)
+ phone_number: CharField(14) {nullable}
+ join_date: DateTime
+ is_active, is_staff, is_approved: bool
+ reset_token: CharField(100) {nullable}
+ __str__()
+ set_password() [inherited]
+ check_password() [inherited]
+}
+class CustomUserManager {
+ create_user(email, password, extra_fields)
+ create_superuser(email, password, extra_fields)
+}
+class PredictionRecord {
+ id: BigAutoField
+ disease: CharField(30)
+ risk_level: CharField(20)
+ probability: FloatField
+ input_data: JSONField
+ recommendation: TextField
+ created_at: DateTime
+ __str__()
+}
+class Appointment {
+ id: BigAutoField
+ reason: CharField(160)
+ preferred_date: DateField
+ notes: TextField
+ status: CharField(20)
+ created_at: DateTime
+ __str__()
+}
+class Notification {
+ id: BigAutoField
+ title: CharField(120)
+ message: TextField
+ is_read: bool
+ created_at: DateTime
+ __str__()
+}
+class DoctorContact {
+ name: CharField(120)
+ specialty: CharField(40)
+ province, city: CharField(80)
+ address: CharField(255)
+ phone: CharField(80)
+ email: EmailField
+ website: URLField
+ notes: TextField
+ __str__()
+}
+class ExercisePlan {
+ title: CharField(120)
+ category: CharField(40)
+ difficulty: CharField(50)
+ duration: CharField(80)
+ instructions, safety_note: TextField
+ __str__()
+}
+Role "1" -- "0..*" CustomUser : PROTECT
+CustomUser "0..1" -- "0..*" PredictionRecord : CASCADE
+CustomUser "1" -- "0..*" Appointment : CASCADE
+CustomUser "1" -- "0..*" Notification : CASCADE
+CustomUserManager ..> CustomUser : creates
+class Group <<Django>>
+class Permission <<Django>>
+CustomUser "0..*" -- "0..*" Group
+CustomUser "0..*" -- "0..*" Permission
+note bottom of DoctorContact
+DoctorContact and ExercisePlan exist in admin.
+Public wellness views use static Python lists.
+end note
+@enduml

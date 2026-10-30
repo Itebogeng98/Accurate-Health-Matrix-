@@ -1,0 +1,30 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Personal goals{% endblock %}
+{% block workspace_content %}
+<section class="journey-intro"><div><span class="journey-eyebrow">Small steps, your pace</span><h1>Build a habit that feels like you.</h1><p>Choose your own goal. Practice days do not need to be consecutive.</p></div><span class="journey-badge">{{ completed_count }} goal{{ completed_count|pluralize }} reached</span></section>
+<details class="journey-panel goal-builder" {% if not goal_count or form.errors %}open{% endif %}>
+  <summary>Create a personal goal <span aria-hidden="true">+</span></summary>
+  <form method="post" class="journey-form goal-create">{% csrf_token %}{% include 'core/journey/fields.html' %}<button type="submit" class="btn btn-primary">Create goal</button></form>
+  <p class="journey-footnote">Try &ldquo;Make time to unwind&rdquo; or &ldquo;Prepare a meal at home&rdquo;. Choose activities that suit your circumstances.</p>
+</details>
+<nav class="journey-filters" aria-label="Goal lists"><a href="{% url 'personal_goals' %}" {% if not archived %}aria-current="page"{% endif %}>My goals</a><a href="?archived=1" {% if archived %}aria-current="page"{% endif %}>Archived</a></nav>
+<div class="goal-grid">
+  {% for card in cards %}
+  <article class="journey-panel goal-card{% if card.complete %} goal-complete{% endif %}">
+    <div class="journey-panel-title"><span class="journey-badge">{{ card.badge }}</span><span class="journey-muted">{{ card.goal.target_days }} day goal</span></div>
+    <h2>{{ card.goal.title }}</h2>
+    <div class="goal-progress-line"><strong>{{ card.goal.days_done }} <small>/ {{ card.goal.target_days }} days</small></strong><span>{{ card.percent }}%</span></div>
+    <progress value="{{ card.goal.days_done }}" max="{{ card.goal.target_days }}" aria-label="Progress for {{ card.goal.title }}">{{ card.percent }}%</progress>
+    <p class="journey-muted">{% if card.complete %}You reached your goal. Take a moment to enjoy that.{% elif card.checked_today %}Today's step is recorded. Come back when you're ready.{% else %}One tick per day. Every practice day adds up.{% endif %}</p>
+    <div class="goal-actions">
+      {% if not archived %}
+        {% if card.checked_today %}<form method="post" action="{% url 'goal_progress' card.goal.pk %}">{% csrf_token %}<button class="btn btn-outline-primary" name="action" value="undo">Undo today's tick</button></form>
+        {% elif not card.complete %}<form method="post" action="{% url 'goal_progress' card.goal.pk %}">{% csrf_token %}<button class="btn btn-primary" name="action" value="complete">I did this today <span aria-hidden="true">&#10003;</span></button></form>{% endif %}
+      {% endif %}
+      <form method="post" action="{% url 'goal_progress' card.goal.pk %}">{% csrf_token %}<button class="goal-text-button" name="action" value="{% if archived %}restore{% else %}archive{% endif %}">{% if archived %}Restore goal{% else %}Archive{% endif %}</button></form>
+    </div>
+  </article>
+  {% empty %}<div class="journey-panel journey-empty"><span class="journey-symbol" aria-hidden="true">&#10022;</span><h2>{% if archived %}No archived goals.{% else %}Start small. Make it yours.{% endif %}</h2><p>{% if archived %}You can archive a goal whenever you need a pause.{% else %}Create your first goal above. You choose the habit and the number of practice days.{% endif %}</p></div>{% endfor %}
+</div>
+{% if cards.has_other_pages %}<nav class="compact-pagination" aria-label="Goal pages">{% if cards.has_previous %}<a href="?archived={% if archived %}1{% else %}0{% endif %}&amp;page={{ cards.previous_page_number }}">Previous</a>{% endif %}<span>{{ cards.number }} / {{ cards.paginator.num_pages }}</span>{% if cards.has_next %}<a href="?archived={% if archived %}1{% else %}0{% endif %}&amp;page={{ cards.next_page_number }}">Next</a>{% endif %}</nav>{% endif %}
+{% endblock %}

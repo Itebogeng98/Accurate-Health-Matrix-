@@ -1,0 +1,60 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Activity
+start
+:Open account registration;
+:Submit account details;
+if (Valid signup?) then (yes)
+ :Create unapproved account;
+ :Staff reviews account in admin;
+ if (Approved?) then (yes)
+  :Log in;
+ else (no)
+  :Login denied; await review;
+  stop
+ endif
+else (no)
+ :Display validation errors;
+ stop
+endif
+if (Authentication succeeds?) then (yes)
+ :Open stroke or lung form;
+ :Submit health indicators;
+ if (Valid input?) then (yes)
+  if (Model artifact exists?) then (yes)
+   :Load Joblib pipeline;
+   if (Load succeeds?) then (yes)
+    :Try named-column inference;
+    if (Inference succeeds?) then (yes)
+     :Use model probability;
+    else (no)
+     :Use heuristic fallback;
+    endif
+   else (no)
+    :Unhandled server error;
+    stop
+   endif
+  else (no)
+   :Use heuristic fallback;
+  endif
+  :Assign risk label and diet advice;
+  :Attempt report persistence;
+  if (Database operation supported?) then (yes)
+   :Report available in dashboard history;
+  else (no)
+   :Warn report not saved;
+  endif
+  :Display result;
+  :Optionally request appointment;
+  :Review pending request and notification;
+ else (no)
+  :Show form errors; correct and resubmit;
+ endif
+else (no)
+ :Show login/API connection error;
+endif
+stop
+@enduml

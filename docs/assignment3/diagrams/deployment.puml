@@ -1,0 +1,35 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Deployment
+node "Observed local host\nWindows / Python 3.14.5" as Host {
+ node "Isolated verification process" as Tests {
+  artifact "Django test client\nconfig.test_settings" as Client
+  database "SQLite :memory:\nsynthetic fixtures" as SQLite
+ }
+ artifact "Repository source / env" as Source
+ folder "datasets / ml_models\nempty at inspection" as Files
+}
+Client --> SQLite
+Client --> Source
+node "Configured application runtime\nnot verified as a live service" as Runtime {
+ artifact "config.wsgi / config.asgi\nDjango + DRF" as App
+}
+database "MySQL endpoint from environment\nnot connected for this evaluation" as MySQL
+node "User browser" as Browser
+cloud "Kaggle download API\noptional / not live-tested" as Kaggle
+cloud "jsDelivr Bootstrap CDN" as CDN
+Browser --> App : HTTP locally; HTTPS recommended
+Browser --> CDN : CSS / JS
+App --> MySQL : Django ORM
+App --> Kaggle : HTTPS when preview needs it
+App --> Files
+note bottom of Runtime
+Production proposal only: reverse proxy + TLS,
+production WSGI/ASGI server, protected MySQL,
+static collection and scheduled backups.
+No cloud deployment evidence available.
+end note
+@enduml

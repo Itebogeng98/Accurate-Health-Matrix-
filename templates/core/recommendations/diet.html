@@ -1,0 +1,45 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Diet Guide{% endblock %}
+{% block workspace_content %}
+<section class="page-head">
+  <span class="hero-eyebrow">Nutrition support</span>
+  <h1>Healthy Diet Recommendations</h1>
+  <p>Explore food ideas and compare nutrient values from the food nutrition dataset. Values use the preparation and serving basis shown on each card.</p>
+</section>
+<div class="cards">
+  {% for food in foods %}
+    <div class="info-card">
+      <h3>{{ food.food }}</h3>
+      <p>{{ food.benefit }}</p>
+      {% include 'core/recommendations/nutrients.html' %}
+    </div>
+  {% endfor %}
+</div>
+<section class="page-head mt-4">
+  <h2>Food Guide</h2>
+  <p>{{ food_guide.total_count }} food records from <a href="{{ nutrition_source_url }}" target="_blank" rel="noopener noreferrer">Kaggle’s common foods nutrition dataset</a>. These reference values are general food information, not a personalised treatment plan.</p>
+  <form method="get" action="{% url 'diet_home' %}" class="d-flex gap-2" role="search">
+    <label for="food-query" class="visually-hidden">Search foods</label>
+    <input id="food-query" class="form-control" type="search" name="q" value="{{ query }}" maxlength="100" placeholder="Search foods, e.g. oats or broccoli">
+    <button class="btn btn-primary" type="submit">Search</button>
+  </form>
+  {% if query %}<p class="mt-2">{{ food_guide.match_count }} matches for “{{ query }}”. Browse matching results below. <a href="{% url 'diet_home' %}">Clear search</a></p>{% else %}<p class="mt-2">Browse a selection of foods below. Search to find a specific food.</p>{% endif %}
+</section>
+<div class="cards">
+  {% for food in food_page %}
+  <div class="info-card">
+    <h3>{{ food.food }}</h3>
+    {% include 'core/recommendations/nutrients.html' %}
+  </div>
+  {% empty %}
+  <p>{% if food_guide.total_count %}No matching foods. Try another search.{% else %}Food nutrition data is currently unavailable.{% endif %}</p>
+  {% endfor %}
+</div>
+{% if food_page.paginator.num_pages > 1 %}
+<nav class="compact-pagination" aria-label="Food results pages">
+  {% if food_page.has_previous %}<a class="btn btn-outline-primary" href="?q={{ query|urlencode }}&amp;page={{ food_page.previous_page_number }}">&larr; Previous</a>{% endif %}
+  <span>Page {{ food_page.number }} of {{ food_page.paginator.num_pages }}</span>
+  {% if food_page.has_next %}<a class="btn btn-outline-primary" href="?q={{ query|urlencode }}&amp;page={{ food_page.next_page_number }}">Next &rarr;</a>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}

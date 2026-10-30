@@ -1,0 +1,112 @@
+{
+  "prepared": "2026-09-30",
+  "environment": {
+    "os": "Windows",
+    "release": "11",
+    "python": "3.14.5",
+    "architecture": "AMD64",
+    "logical_cpus": 8,
+    "packages": {
+      "Django": "6.0.6",
+      "djangorestframework": "3.17.1",
+      "numpy": "2.5.0",
+      "pandas": "3.0.4",
+      "scikit-learn": "1.9.0",
+      "joblib": "1.5.3",
+      "PyMySQL": "1.2.0"
+    },
+    "database": "SQLite in-memory",
+    "client": "Django test client; no browser/network/static downloads",
+    "fixtures": "1 synthetic approved user; no original database access"
+  },
+  "files": {
+    "datasets": [],
+    "ml_models": []
+  },
+  "authentication_classes": [
+    "SessionAuthentication",
+    "BasicAuthentication"
+  ],
+  "anonymous_pages": {
+    "/dashboard/": 302,
+    "/accounts/profile/": 302,
+    "/dashboard/appointments/": 302,
+    "/dashboard/notifications/": 302,
+    "/predict/stroke/": 302,
+    "/predict/lung-cancer/": 302,
+    "/wellness/doctors/": 302,
+    "/wellness/exercises/": 302,
+    "/wellness/data-tables/": 302
+  },
+  "anonymous_prediction_api": 403,
+  "dashboard": {
+    "n": 100,
+    "median_ms": 22.05945,
+    "p95_ms": 25.1737,
+    "max_ms": 25.6842
+  },
+  "stroke_page_post": {
+    "n": 100,
+    "median_ms": 28.226799999999997,
+    "p95_ms": 41.1487,
+    "max_ms": 132.1985
+  },
+  "fallback_scoring": {
+    "n": 100,
+    "median_ms": 0.052,
+    "p95_ms": 0.0823,
+    "max_ms": 0.1213
+  },
+  "missing_credentials": {
+    "exists": false,
+    "source_mode": "Missing credentials"
+  },
+  "sanitised_api_example": {
+    "status": "success",
+    "message": "Prediction generated successfully",
+    "data": {
+      "record_id": "<generated integer>",
+      "disease": "stroke",
+      "risk": "High Risk",
+      "probability": 0.95,
+      "probability_percent": 95.0,
+      "advice": "Focus on low-salt, high-fibre meals, fruits, vegetables, whole grains, and regular exercise.",
+      "foods": [
+        {
+          "food": "Avocado",
+          "benefit": "Healthy fats that support heart health"
+        },
+        {
+          "food": "Brown rice",
+          "benefit": "Whole grain energy with fibre"
+        },
+        {
+          "food": "Beans",
+          "benefit": "Plant protein and fibre"
+        },
+        {
+          "food": "Banana",
+          "benefit": "Potassium-rich option"
+        },
+        {
+          "food": "Oats",
+          "benefit": "Supports cholesterol control and heart health"
+        },
+        {
+          "food": "Spinach",
+          "benefit": "Rich in vitamins, minerals and antioxidants"
+        },
+        {
+          "food": "Apples",
+          "benefit": "High fibre fruit for daily healthy eating"
+        }
+      ]
+    }
+  },
+  "unapproved_basic_auth_prediction_status": 200,
+  "production_hasher_check": {
+    "algorithm": "pbkdf2_sha256",
+    "differs_from_plaintext": true,
+    "check_password": true
+  }
+}

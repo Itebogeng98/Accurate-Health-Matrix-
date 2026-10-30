@@ -1,0 +1,41 @@
+{% extends 'base/patient_workspace.html' %}
+{% load static %}
+{% block workspace_title %}Appointments{% endblock %}
+{% block workspace_content %}
+
+
+    <section class="support-layout">
+      <article class="matrix-panel support-form-panel">
+        <div class="panel-head">
+          <span class="matrix-kicker">Request follow-up</span>
+          <h3>Book an Appointment</h3>
+        </div>
+        <form method="post" class="support-form">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary" type="submit">Submit Request</button>
+        </form>
+      </article>
+
+      <article class="matrix-panel">
+        <div class="panel-head">
+          <span class="matrix-kicker">History</span>
+          <h3>Your Requests</h3>
+        </div>
+        <div class="appointment-list">
+          {% for appointment in appointments %}
+            <article class="appointment-card">
+              <div>
+                <strong>{{ appointment.reason }}</strong>
+                <span>{{ appointment.preferred_date|date:'M d, Y' }}</span>
+              </div>
+              <em class="status-pill {{ appointment.status }}">{{ appointment.get_status_display }}</em>
+              {% if appointment.notes %}<p>{{ appointment.notes }}</p>{% endif %}
+            </article>
+          {% empty %}
+            <p class="empty-note">No appointment requests yet.</p>
+          {% endfor %}
+        </div>
+      </article>
+    </section>
+{% endblock %}

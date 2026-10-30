@@ -1,0 +1,40 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Use Cases
+left to right direction
+actor "Patient / approved user" as User
+actor "Staff administrator" as Admin
+actor "Developer / data analyst" as Dev
+actor "Kaggle download API" as Kaggle
+rectangle AHM {
+usecase "UC01 Register / log in" as UC01
+usecase "UC02 Submit stroke / lung inputs\nand receive risk result" as UC02
+usecase "UC03 View dashboard / history" as UC03
+usecase "UC04 Update profile" as UC04
+usecase "UC05 Request appointment" as UC05
+usecase "UC06 Read notifications" as UC06
+usecase "UC07 Preview dataset" as UC07
+usecase "UC08 Browse diet / wellness" as UC08
+usecase "UC09 Manage records / approve users" as UC09
+usecase "UC10 Trigger retraining" as UC10
+}
+User --> UC01
+User --> UC02
+User --> UC03
+User --> UC04
+User --> UC05
+User --> UC06
+User --> UC07
+User --> UC08
+Admin --> UC09
+Admin --> UC10
+Dev --> UC10 : training script
+Kaggle -- UC07 : conditional download
+note bottom of UC10
+Training requires local CSVs.
+Admin endpoint does not download datasets.
+end note
+@enduml

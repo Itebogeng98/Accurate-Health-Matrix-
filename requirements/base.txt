@@ -1,0 +1,14 @@
+Django>=5.0,<7.0
+djangorestframework
+python-decouple
+python-dotenv
+requests
+pandas
+numpy
+# Keep inference compatible with the committed model artifacts.
+scikit-learn==1.9.0
+joblib
+matplotlib
+seaborn
+# Optional only when switching from SQLite to MySQL:
+PyMySQL

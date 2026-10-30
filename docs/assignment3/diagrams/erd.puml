@@ -1,0 +1,64 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Erd
+hide circle
+entity accounts_role {
+ * id : bigint PK
+ --
+ role : varchar(100) UNIQUE
+}
+entity accounts_customuser {
+ * id : bigint PK
+ --
+ email : varchar(254) UNIQUE
+ role_id : bigint FK NOT NULL
+ password : varchar(128)
+ is_approved : boolean
+}
+entity predictions_predictionrecord {
+ * id : bigint PK
+ --
+ user_id : bigint FK NULL
+ disease : varchar(30)
+ probability : float
+ input_data : JSON
+}
+entity accounts_appointment {
+ * id : bigint PK
+ --
+ user_id : bigint FK NOT NULL
+ preferred_date : date
+ status : varchar(20)
+}
+entity accounts_notification {
+ * id : bigint PK
+ --
+ user_id : bigint FK NOT NULL
+ is_read : boolean
+}
+entity wellness_doctorcontact {
+ * id : bigint PK
+ --
+ name : varchar(120)
+ specialty : varchar(40)
+}
+entity wellness_exerciseplan {
+ * id : bigint PK
+ --
+ title : varchar(120)
+ category : varchar(40)
+}
+accounts_role ||--o{ accounts_customuser
+accounts_customuser |o--o{ predictions_predictionrecord
+accounts_customuser ||--o{ accounts_appointment
+accounts_customuser ||--o{ accounts_notification
+note bottom of accounts_customuser
+Inherited auth fields and M:N group/permission
+join tables are detailed in DATA_DICTIONARY.md.
+This diagram shows the domain-table schema;
+Django session, token, admin and auth tables also exist.
+end note
+@enduml

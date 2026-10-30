@@ -1,0 +1,38 @@
+{% if result %}
+<div class="result">
+    <span class="hero-eyebrow">Prediction complete</span>
+    <h2>Prediction Result</h2>
+    <div class="row g-3 my-2">
+        <div class="col-md-6">
+            <div class="stat-card">
+                <strong>{{ result.risk }}</strong>
+                <span>Risk level</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stat-card">
+                <strong>{{ result.probability_percent }}%</strong>
+                <span>Model score</span>
+            </div>
+        </div>
+    </div>
+    <p><strong>Advice:</strong> {{ result.advice }}</p>
+    <p class="small text-muted">Educational model output, not a clinically validated probability or diagnosis.</p>
+    {% if result.record %}
+    <div class="actions report-actions">
+      <a class="btn btn-primary" href="{% url 'prediction_report' result.record.pk %}">View / print this report</a>
+      <a class="btn btn-outline-primary" href="{% url 'combined_report' %}">Combined stroke &amp; lung report</a>
+    </div>
+    {% endif %}
+    <h3>Recommended Foods</h3>
+    <div class="cards small">
+        {% for food in result.foods %}
+            <div class="card">
+                <h4>{{ food.food }}</h4>
+                <p>{{ food.benefit }}</p>
+                {% include 'core/recommendations/nutrients.html' %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

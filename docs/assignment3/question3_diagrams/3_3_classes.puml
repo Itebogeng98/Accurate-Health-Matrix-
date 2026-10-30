@@ -1,0 +1,123 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam defaultFontColor #17334A
+skinparam ArrowColor #42647A
+skinparam ArrowFontSize 13
+skinparam roundcorner 8
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F0F7FA
+skinparam classBorderColor #42647A
+skinparam componentBackgroundColor #F0F7FA
+skinparam componentBorderColor #42647A
+skinparam rectangleBorderColor #42647A
+skinparam usecaseBackgroundColor #F0F7FA
+skinparam usecaseBorderColor #42647A
+skinparam noteBackgroundColor #FFF6DE
+skinparam noteBorderColor #BCA76D
+skinparam noteFontSize 14
+skinparam packageStyle rectangle
+hide empty members
+class Role {
+ {field} + id: BigAutoField
+ {field} + role: CharField(100) {unique}
+ {method} + __str__(): str
+}
+class CustomUser {
+ {field} + id: BigAutoField
+ {field} + email: EmailField {unique}
+ {field} + first_name, last_name: CharField(100)
+ {field} + phone_number: CharField(14) {nullable}
+ {field} + join_date: DateTimeField
+ {field} + is_active, is_staff, is_approved: BooleanField
+ {field} + reset_token: CharField(100) {nullable}
+ -- inherited authentication fields --
+ {field} + password: CharField(128)
+ {field} + last_login: DateTimeField {nullable}
+ {field} + is_superuser: BooleanField
+ -- operations --
+ {method} + __str__(): str
+ {method} + set_password(raw_password) {inherited}
+ {method} + check_password(raw_password): bool {inherited}
+}
+class CustomUserManager {
+ {method} + create_user(email, password=None, **extra_fields)
+ {method} + create_superuser(email, password=None, **extra_fields)
+}
+class PredictionRecord {
+ {field} + id: BigAutoField
+ {field} + disease: CharField(30) {stroke, lung_cancer}
+ {field} + risk_level: CharField(20)
+ {field} + probability: FloatField = 0
+ {field} + input_data: JSONField = dict
+ {field} + recommendation: TextField {blank}
+ {field} + created_at: DateTimeField {auto_now_add}
+ {method} + __str__(): str
+}
+class Appointment {
+ {field} + id: BigAutoField
+ {field} + reason: CharField(160)
+ {field} + preferred_date: DateField
+ {field} + notes: TextField {blank}
+ {field} + status: CharField(20) = pending
+ {field} + created_at: DateTimeField {auto_now_add}
+ {method} + __str__(): str
+}
+class Notification {
+ {field} + id: BigAutoField
+ {field} + title: CharField(120)
+ {field} + message: TextField
+ {field} + is_read: BooleanField = false
+ {field} + created_at: DateTimeField {auto_now_add}
+ {method} + __str__(): str
+}
+class DoctorContact {
+ {field} + id: BigAutoField
+ {field} + name: CharField(120)
+ {field} + specialty: CharField(40) {choices}
+ {field} + province: CharField(80) = Gauteng
+ {field} + city: CharField(80) {blank}
+ {field} + address: CharField(255) {blank}
+ {field} + phone: CharField(80) {blank}
+ {field} + email: EmailField {blank}
+ {field} + website: URLField {blank}
+ {field} + notes: TextField {blank}
+ {method} + __str__(): str
+}
+class ExercisePlan {
+ {field} + id: BigAutoField
+ {field} + title: CharField(120)
+ {field} + category: CharField(40) {choices}
+ {field} + difficulty: CharField(50) = Beginner
+ {field} + duration: CharField(80) = 10-20 minutes
+ {field} + instructions: TextField
+ {field} + safety_note: TextField {blank}
+ {method} + __str__(): str
+}
+class Group <<Django auth>>
+class Permission <<Django auth>>
+Role "1" -- "0..*" CustomUser : role / PROTECT
+CustomUser "0..1" -- "0..*" PredictionRecord : user / CASCADE
+CustomUser "1" -- "0..*" Appointment : user / CASCADE
+CustomUser "1" -- "0..*" Notification : user / CASCADE
+CustomUser "0..*" -- "0..*" Group : groups
+CustomUser "0..*" -- "0..*" Permission : user_permissions
+CustomUserManager ..> CustomUser : creates
+DoctorContact -[hidden]right-> ExercisePlan
+note bottom of DoctorContact
+All seven domain models are in health_ai/models.py.
+FKs are represented by associations, not duplicated fields.
+Each linked Appointment/Notification has one user;
+a PredictionRecord can have no user.
+end note
+note bottom of ExercisePlan
+DoctorContact and ExercisePlan have no domain FKs.
+They are admin-managed models; public wellness pages
+currently read static Python lists instead.
+end note
+@enduml

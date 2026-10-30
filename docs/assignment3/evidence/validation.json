@@ -1,0 +1,229 @@
+{
+  "prepared": "2026-09-30",
+  "subsections_expected": [
+    "1.1",
+    "1.2",
+    "1.3",
+    "2.1",
+    "2.2",
+    "2.3",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.6",
+    "4.1",
+    "4.2",
+    "4.3",
+    "4.4",
+    "5.1",
+    "5.2",
+    "5.3",
+    "5.4"
+  ],
+  "subsections_found": [
+    "1.1",
+    "1.2",
+    "1.3",
+    "2.1",
+    "2.2",
+    "2.3",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.6",
+    "4.1",
+    "4.2",
+    "4.3",
+    "4.4",
+    "5.1",
+    "5.2",
+    "5.3",
+    "5.4"
+  ],
+  "subsections_match": true,
+  "links": [
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "EVIDENCE_GAPS.md",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "../../AHM_Assignment_2_Submission.docx",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "../../AHM_Assignment_2_Submission.docx",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "../../tmp_pdf_text/Accurate_Health_Matrix_Project_Document(1).txt",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "../../tmp_pdf_text/ISJ107V%20Assignment%202%20ver(1).txt",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "../../README.md",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "../PROJECT_RESTRUCTURING_REPORT.md",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/README.md",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/regression-tests.txt",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/measurements.json",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/measure.py",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/README.md",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/architecture.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/use_cases.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/classes.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/sequence.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/activity.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/components.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/deployment.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/SCREENSHOTS.md",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "diagrams/erd.puml",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/DATA_DICTIONARY.md",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/regression-tests.txt",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/django-check.txt",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/migration-check.txt",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/measurements.json",
+      "exists": true
+    },
+    {
+      "from": "ISJ107V_Assignment_3.md",
+      "target": "evidence/SCREENSHOTS.md",
+      "exists": true
+    }
+  ],
+  "all_local_links_exist": true,
+  "traceability_all_requirement_rows": true,
+  "test_ids_present": true,
+  "diagram_sources": {
+    "activity.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    },
+    "architecture.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    },
+    "classes.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    },
+    "components.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    },
+    "deployment.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    },
+    "erd.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    },
+    "sequence.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    },
+    "use_cases.puml": {
+      "start_end": true,
+      "no_multiline_quoted_labels": true
+    }
+  },
+  "rendering": "Not tested; renderer unavailable",
+  "screenshots": "Evidence not available; browser connection timeout"
+}

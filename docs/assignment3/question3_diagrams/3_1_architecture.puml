@@ -1,0 +1,70 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam defaultFontColor #17334A
+skinparam ArrowColor #42647A
+skinparam ArrowFontSize 13
+skinparam roundcorner 8
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F0F7FA
+skinparam classBorderColor #42647A
+skinparam componentBackgroundColor #F0F7FA
+skinparam componentBorderColor #42647A
+skinparam rectangleBorderColor #42647A
+skinparam usecaseBackgroundColor #F0F7FA
+skinparam usecaseBorderColor #42647A
+skinparam noteBackgroundColor #FFF6DE
+skinparam noteBorderColor #BCA76D
+skinparam noteFontSize 14
+skinparam packageStyle rectangle
+left to right direction
+actor "Patient" as Patient
+actor "Staff administrator" as Admin
+component "Web browser\nDjango templates + Bootstrap" as Browser
+component "Authenticated API client" as APIClient
+rectangle "AHM - Django application" {
+ component "health_ai.views\nBrowser views / DRF endpoints\nand Django admin" as Views
+ component "health_ai.forms / serializers\nInput validation" as Forms
+ component "health_ai.services\nDataset previews / persistence" as Services
+ component "ml.prediction\npredict_stroke()\npredict_lung_cancer()" as Predictor
+ component "ml.model_loader / preprocessing\nJoblib loading + DataFrame inference" as Adapter
+ component "ml.recommendation\nRule-based diet guidance" as Diet
+}
+database "MySQL\nConfigured application database" as DB
+folder "datasets/\nLocal CSV training/preview files\nAbsent at inspection" as CSV
+artifact "ml_models/*.pkl\nTrained scikit-learn pipelines\nAbsent at inspection" as Models
+cloud "Kaggle download API\nOptional HTTPS dataset retrieval" as Kaggle
+cloud "jsDelivr CDN\nBootstrap CSS / JavaScript" as CDN
+Patient --> Browser
+Patient --> APIClient
+Admin --> Browser : /admin/
+Browser --> Views : HTTP forms / session
+APIClient --> Views : JSON prediction request
+Browser ..> CDN : static resources
+Views --> Forms
+Views --> Services
+Views --> Predictor
+Views --> Diet
+Views --> DB : ORM queries
+Services --> DB : PredictionRecord save
+Services --> CSV : local preview first
+Services ..> Kaggle : download ZIP if local file\nmissing and keys configured
+Predictor --> Adapter : attempt trained inference
+Adapter --> Models : load artifact if present
+note bottom of Predictor
+Emerging technology: scikit-learn ML integration.
+No model artifact is available in the inspected copy.
+Current executable path uses heuristic fallback.
+Diet guidance is rule-based, not learned.
+end note
+note bottom of DB
+Evaluation used isolated SQLite, not this MySQL DB.
+Kaggle previews are held in memory;
+they do not create local training CSVs.
+end note
+@enduml

@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<section class="editorial-hero">
+    <div class="hero-copy">
+        <span class="hero-kicker">Accurate HealthMatrix</span>
+        <h1>Health risk insight with a sharper visual pulse.</h1>
+        <p>AHM turns stroke and lung risk checks, food recommendations, and wellness actions into one confident health dashboard.</p>
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}">Open Dashboard</a>
+                <a class="btn btn-outline-light btn-lg" href="{% url 'stroke_predict' %}">Run Prediction</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Start Now</a>
+                <a class="btn btn-outline-light btn-lg" href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero-art">
+        <img class="hero-img hero-img-main" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80" alt="">
+        <img class="hero-img hero-img-small" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=600&q=80" alt="">
+        <div class="floating-score">
+            <strong>AHM</strong>
+            <span>Risk insights + wellness guidance</span>
+        </div>
+    </div>
+</section>
+
+<section class="marquee-band">
+    <span>Stroke Prediction</span>
+    <span>Lung Health</span>
+    <span>Diet Guidance</span>
+    <span>Exercise Plans</span>
+    <span>Doctor Directory</span>
+</section>
+
+<section class="showcase-section">
+    <div class="section-intro">
+        <span class="hero-kicker dark">AHM Modules</span>
+        <h2>Not just forms. A guided health matrix.</h2>
+    </div>
+    <div class="showcase-grid">
+        <article class="showcase-card tall">
+            <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80" alt="">
+            <div>
+                <span>01</span>
+                <h3>Stroke Prediction</h3>
+                <p>Use health indicators such as age, BMI, hypertension, glucose and smoking status.</p>
+            </div>
+        </article>
+        <article class="showcase-card">
+            <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df7b?auto=format&fit=crop&w=900&q=80" alt="">
+            <div>
+                <span>02</span>
+                <h3>Lung Cancer Prediction</h3>
+                <p>Turn lifestyle and symptom inputs into a clearer risk result.</p>
+            </div>
+        </article>
+        <article class="showcase-card accent">
+            <div>
+                <span>03</span>
+                <h3>Diet Recommendation</h3>
+                <p>Connect prediction results to food suggestions that support healthier habits.</p>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

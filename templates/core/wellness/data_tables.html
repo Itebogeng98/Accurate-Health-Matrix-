@@ -1,0 +1,33 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Data Map{% endblock %}
+{% block workspace_content %}
+<section class="page-head">
+  <span class="hero-eyebrow">Project data map</span>
+  <h1>System Tables & ETL Location</h1>
+  <p>This page shows where the project stores its database tables and where the ETL/data science files are placed.</p>
+</section>
+
+<h2>Database Tables</h2>
+<div class="table-wrap">
+  <table>
+    <tr><th>Table</th><th>Purpose</th><th>ETL Stage</th></tr>
+    {% for t in tables %}
+      <tr><td><code>{{ t.table }}</code></td><td>{{ t.purpose }}</td><td>{{ t.etl_stage }}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<h2>ETL / Data Science Files</h2>
+<div class="table-wrap">
+  <table>
+    <tr><th>File / Folder</th><th>Status</th><th>Used For</th></tr>
+    {% for f in etl_files %}
+      <tr><td><code>{{ f.name }}</code></td><td>{{ f.status }}</td><td>{{ f.used_for }}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="alert px-3 py-3">
+  <strong>Important:</strong> after downloading Kaggle CSVs, put them inside the <code>datasets/</code> folder. Then run <code>python scripts/train_models.py</code>. The trained model files will be saved inside <code>ml_models/</code>.
+</div>
+{% endblock %}

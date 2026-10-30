@@ -1,0 +1,9 @@
+{% if food.nutrition %}
+<p class="small text-muted">Reference: {{ food.reference_food|default:food.food }} · {{ food.serving_size }}</p>
+<dl class="row small mb-0">
+  <dt class="col-7">Energy</dt><dd class="col-5">{{ food.nutrition.calories_kcal|default_if_none:'—' }} kcal</dd>
+  <dt class="col-7">Protein</dt><dd class="col-5">{{ food.nutrition.protein_g|default_if_none:'—' }} g</dd>
+  <dt class="col-7">Fibre</dt><dd class="col-5">{{ food.nutrition.fiber_g|default_if_none:'—' }} g</dd>
+  <dt class="col-7">Sodium</dt><dd class="col-5">{{ food.nutrition.sodium_mg|default_if_none:'—' }} mg</dd>
+</dl>
+{% endif %}

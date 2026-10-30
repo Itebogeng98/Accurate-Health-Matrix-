@@ -1,0 +1,32 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam wrapWidth 180
+title AHM - Architecture
+actor "Patient / approved user" as User
+actor "Staff administrator" as Admin
+component "Browser: Django templates + Bootstrap" as UI
+component "Django / DRF\nhealth_ai.views" as Web
+component "services.py\npersistence + dataset preview" as Services
+component "ml.prediction\nML adapter / fallback scoring" as ML
+database "Configured MySQL" as DB
+folder "Local CSVs\ncurrently empty" as CSV
+artifact "Joblib pipelines\ncurrently absent" as Models
+cloud "Kaggle download API\noptional; not verified live" as Kaggle
+User --> UI
+Admin --> Web : /admin/
+UI --> Web : HTTP forms / sessions
+Web --> Services
+Web --> ML
+Services --> DB : Django ORM
+Web --> DB : Django ORM
+ML --> Models : load if present
+Services --> CSV : preview first
+Services --> Kaggle : requests.get if CSV absent\nand credentials set
+note bottom of ML
+Current available execution is heuristic fallback.
+Training code implements RandomForest pipelines;
+no trained artifacts found in this workspace.
+end note
+@enduml

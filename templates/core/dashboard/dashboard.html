@@ -1,0 +1,136 @@
+{% extends 'base/patient_workspace.html' %}
+{% load static %}
+{% block workspace_title %}Dashboard{% endblock %}
+{% block workspace_content %}
+
+
+    <section class="matrix-hero-card">
+      <div>
+        <span class="matrix-kicker">Your daily overview</span>
+        <h2>Welcome back, {{ patient.first_name|default:patient_name }}.</h2>
+        <p>A little clarity. A healthier next step. Choose a check to get started.</p>
+        <div class="matrix-actions">
+          <a class="btn btn-primary" href="{% url 'stroke_predict' %}">Run Stroke Check</a>
+          <a class="btn btn-outline-primary" href="{% url 'lung_predict' %}">Run Lung Check</a>
+        </div>
+      </div>
+      <div class="hero-orbit" aria-hidden="true"><span>+</span><small>YOUR HEALTH<br>IN FOCUS</small></div>
+    </section>
+
+    <section class="matrix-stats">
+      <article>
+        <span>Total Reports</span>
+        <strong>{{ total_reports }}</strong>
+      </article>
+      <article>
+        <span>Latest Risk</span>
+        <strong>{% if latest_record %}{{ latest_record.risk_level }}{% else %}None{% endif %}</strong>
+      </article>
+      <article>
+        <span>Appointments</span>
+        <strong>{{ pending_appointments }} Pending</strong>
+      </article>
+      <article>
+        <span>Notifications</span>
+        <strong>{{ unread_notifications }} New</strong>
+      </article>
+    </section>
+
+    <nav class="dashboard-tabs" aria-label="Dashboard sections">
+      <a href="#wellness">Wellness</a><a href="#bookings">Appointments</a><a href="#messages">Notifications</a><a href="#datasets">Datasets</a>
+    </nav>
+    <section id="reports" class="dashboard-section" aria-labelledby="reports-title">
+      <article class="matrix-panel report-panel">
+        <div class="panel-head"><span class="matrix-kicker">History</span><h3 id="reports-title">Recent health reports</h3><a class="btn btn-primary mt-2" href="{% url 'combined_report' %}">Combined stroke &amp; lung report</a></div>
+        <div class="matrix-table-wrap">
+          <table class="matrix-table">
+            <caption class="visually-hidden">Your ten most recent health reports</caption>
+            <thead><tr><th scope="col">Date</th><th scope="col">Disease</th><th scope="col">Risk</th><th scope="col">Probability</th><th scope="col">Advice</th></tr></thead>
+            <tbody>
+            {% for r in records %}
+              <tr>
+                <td>{{ r.created_at|date:'Y-m-d H:i' }}</td>
+                <td>{{ r.get_disease_display }}</td>
+                <td><span class="risk-chip">{{ r.risk_level }}</span></td>
+                <td>{{ r.probability|floatformat:2 }}</td>
+                <td><details><summary>View advice</summary>{{ r.recommendation }}</details><a href="{% url 'prediction_report' r.pk %}">View / print report</a></td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="5">No predictions yet. Start with a stroke or lung risk check.</td></tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+    <section id="bookings" class="dashboard-section" aria-labelledby="bookings-title">
+      <article class="matrix-panel">
+        <div class="panel-head">
+          <span class="matrix-kicker">Bookings</span>
+          <h3 id="bookings-title">Appointments</h3>
+          <a href="{% url 'appointments' %}">Manage appointments &rarr;</a>
+        </div>
+        <div class="compact-feed">
+          {% for appointment in appointments %}
+            <a href="{% url 'appointments' %}">
+              <strong>{{ appointment.reason }}</strong>
+              <span>{{ appointment.preferred_date|date:'M d, Y' }} - {{ appointment.get_status_display }}</span>
+            </a>
+          {% empty %}
+            <p>No appointment requests yet.</p>
+          {% endfor %}
+        </div>
+      </article>
+
+    </section>
+    <section id="messages" class="dashboard-section" aria-labelledby="messages-title">
+      <article class="matrix-panel">
+        <div class="panel-head">
+          <span class="matrix-kicker">System messages</span>
+          <h3 id="messages-title">Notifications</h3>
+          <a href="{% url 'notifications' %}">View all notifications &rarr;</a>
+        </div>
+        <div class="compact-feed">
+          {% for notification in notifications %}
+            <a href="{% url 'notifications' %}">
+              <strong>{{ notification.title }}</strong>
+              <span>{{ notification.created_at|date:'M d, Y H:i' }}{% if not notification.is_read %} - New{% endif %}</span>
+            </a>
+          {% empty %}
+            <p>No notifications yet.</p>
+          {% endfor %}
+        </div>
+      </article>
+    </section>
+    <section id="wellness" class="dashboard-section matrix-panel" aria-labelledby="wellness-title">
+      <div class="next-step-card">
+        <div><span class="journey-eyebrow">Your next step</span><h3 id="wellness-title">{{ next_step.title }}</h3><p>{{ next_step.text }}</p><a class="btn btn-primary" href="{{ next_step.url }}">{{ next_step.label }} &rarr;</a></div>
+      </div>
+      <div class="wellness-links journey-dashboard-links">
+        <a href="{% url 'diet_home' %}"><span aria-hidden="true">&#9752;</span><strong>Eat well</strong><small>Explore your diet guide &rarr;</small></a>
+        <a href="{% url 'exercises' %}"><span aria-hidden="true">&#8599;</span><strong>Keep moving</strong><small>Find your exercise plan &rarr;</small></a>
+        <a href="{% url 'personal_goals' %}"><span aria-hidden="true">&#10022;</span><strong>Personal goals</strong><small>{{ goals_reached }} reached &middot; {{ goal_count }} goals &rarr;</small></a>
+      </div>
+    </section>
+    <section id="datasets" class="dashboard-section matrix-panel" aria-label="Datasets">
+    <section class="sidebar-datasets">
+      <div class="sidebar-section-title">
+        <strong>Datasets</strong>
+        <span>Kaggle / Local</span>
+      </div>
+      <div class="dataset-list">
+        {% for dataset in datasets %}
+          <a class="dataset-item {% if dataset.status == 'Available' or dataset.status == 'Kaggle API' %}available{% else %}missing{% endif %}" href="{% url 'dashboard_dataset' dataset.slug %}">
+            <div>
+              <strong>{{ dataset.name }}</strong>
+              <small>{{ dataset.filename }}</small>
+            </div>
+            <span>{{ dataset.status }}</span>
+            <em>{{ dataset.size }}</em>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+    </section>
+<script src="{% static 'js/dashboard.js' %}?v=3" defer></script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Doctors{% endblock %}
+{% block workspace_content %}
+<section class="page-head">
+  <span class="hero-eyebrow">Professional support</span>
+  <h1>Gauteng Doctor Directory</h1>
+  <p>Useful specialists and doctor-finder links for users who may need professional support after a risk result.</p>
+  <div class="actions">
+    <a class="btn {% if speciality == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?speciality=all" {% if speciality == 'all' %}aria-current="true"{% endif %}>All</a>
+    <a class="btn {% if speciality == 'neurologist' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?speciality=neurologist" {% if speciality == 'neurologist' %}aria-current="true"{% endif %}>Stroke / Neurology</a>
+    <a class="btn {% if speciality == 'pulmonologist' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?speciality=pulmonologist" {% if speciality == 'pulmonologist' %}aria-current="true"{% endif %}>Lung / Pulmonology</a>
+  </div>
+</section>
+<div class="alert px-3 py-3">
+  This is an educational directory only. Users must verify availability and contact details directly with the practice. For emergencies, use emergency medical services immediately.
+</div>
+<div class="card-grid">
+  {% for d in doctors %}
+  <article class="info-card">
+    <span class="pill">{{ d.specialty }}</span>
+    <h2 class="mt-3">{{ d.name }}</h2>
+    <p><strong>Area:</strong> {{ d.city }}</p>
+    <details class="card-details"><summary>Contact &amp; practice details</summary><p><strong>Address:</strong> {{ d.address }}</p>
+    {% if d.phone %}<p><strong>Phone:</strong> {{ d.phone }}</p>{% endif %}
+    {% if d.email %}<p><strong>Email:</strong> {{ d.email }}</p>{% endif %}
+    <p>{{ d.notes }}</p></details>
+    {% if d.website %}<a class="btn btn-primary btn-sm" href="{{ d.website }}" target="_blank" rel="noopener noreferrer">Open website</a>{% endif %}
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base/patient_workspace.html' %}
+{% load static %}
+{% block workspace_title %}Prediction report{% endblock %}
+{% block workspace_content %}
+<div class="report-toolbar">
+  <a href="{% url 'dashboard' %}#reports">&larr; All reports</a>
+  {% if reports %}<button type="button" class="btn btn-primary" id="print-report">Print / save as PDF</button>{% endif %}
+</div>
+<article class="print-report">
+  <header class="report-heading">
+    <span class="report-brand">AHM <small>Accurate HealthMatrix</small></span>
+    <h1>{% if combined %}Stroke &amp; lung health report{% else %}Prediction report{% endif %}</h1>
+    <p>Patient: <strong>{{ user.get_full_name|default:user.email }}</strong></p>
+    <p class="report-caption">Generated {{ generated_at|date:'M d, Y H:i T' }}{% if combined %} &middot; Latest saved check for each condition{% endif %}</p>
+  </header>
+  {% if combined %}<p class="report-caption">Each check keeps its own date and model score. These results may come from different visits.</p>{% endif %}
+  {% for item in reports %}
+  <section class="report-check">
+    <div class="report-check-heading"><h2>{{ item.record.get_disease_display }}</h2><span>Report #{{ item.record.pk }} &middot; {{ item.record.created_at|date:'M d, Y H:i T' }}</span></div>
+    <dl class="report-scores"><div><dt>Risk level</dt><dd>{{ item.record.risk_level }}</dd></div><div><dt>Model score</dt><dd>{{ item.score|floatformat:2 }}%</dd></div></dl>
+    <h3>Saved guidance</h3><p>{{ item.record.recommendation|default:'No guidance saved for this check.' }}</p>
+    <h3>Information used</h3>
+    <dl class="report-inputs">{% for label, value in item.inputs %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% empty %}<p>No inputs were saved for this check.</p>{% endfor %}</dl>
+  </section>
+  {% endfor %}
+  {% for disease in missing %}<p class="report-missing">{{ disease }}: no saved check yet.</p>{% endfor %}
+  {% if not reports %}<div class="report-empty"><h2>No reports yet</h2><p>Complete a stroke or lung check to create your first report.</p><a class="btn btn-primary" href="{% url 'stroke_predict' %}">Stroke check</a> <a class="btn btn-outline-primary" href="{% url 'lung_predict' %}">Lung check</a></div>{% endif %}
+  <footer class="report-disclaimer">Educational model output for learning and wellness support. Model scores are not clinically validated probabilities or a medical diagnosis. Discuss health concerns with a qualified healthcare professional.</footer>
+</article>
+<script src="{% static 'js/report.js' %}" defer></script>
+{% endblock %}

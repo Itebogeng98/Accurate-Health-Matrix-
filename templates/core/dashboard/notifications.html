@@ -1,0 +1,27 @@
+{% extends 'base/patient_workspace.html' %}
+{% load static %}
+{% block workspace_title %}Notifications{% endblock %}
+{% block workspace_content %}
+<form method="post" class="mb-3">{% csrf_token %}<button class="btn btn-outline-primary" type="submit">Mark All Read</button></form>
+
+
+    <section class="matrix-panel">
+      <div class="panel-head">
+        <span class="matrix-kicker">{{ unread_notifications }} unread</span>
+        <h3>Activity Feed</h3>
+      </div>
+      <div class="notification-list">
+        {% for notification in notifications %}
+          <article class="notification-card {% if not notification.is_read %}unread{% endif %}">
+            <div>
+              <strong>{{ notification.title }}</strong>
+              <span>{{ notification.created_at|date:'M d, Y H:i' }}</span>
+            </div>
+            <p>{{ notification.message }}</p>
+          </article>
+        {% empty %}
+          <p class="empty-note">No notifications yet.</p>
+        {% endfor %}
+      </div>
+    </section>
+{% endblock %}
