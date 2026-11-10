@@ -18,6 +18,10 @@ class PredictionRecord(models.Model):
     recommendation = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def probability_percent(self):
+        return self.probability * 100
+
     class Meta:
         app_label = 'predictions'
         ordering = ['-created_at']

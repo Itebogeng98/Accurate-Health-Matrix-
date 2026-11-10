@@ -1,19 +1,19 @@
+{% load static %}
 <aside class="matrix-sidebar">
-  <a class="matrix-logo" href="{% url 'dashboard' %}"><span>AHM</span><small>Accurate HealthMatrix</small></a>
+  <a class="matrix-logo" href="{% url 'dashboard' %}"><img src="{% static 'images/Accurate HealthMatrix pulse heart logo.png' %}" alt="Accurate HealthMatrix" width="220" height="74"></a>
   <nav class="matrix-menu" aria-label="Patient navigation">
-    <a href="{% url 'dashboard' %}" data-dashboard-overview {% if request.resolver_match.url_name == 'dashboard' %}class="active" aria-current="page"{% endif %}>Overview</a>
-    <a href="{% url 'dashboard' %}#reports" {% if request.resolver_match.url_name == 'dashboard' %}data-dashboard-section{% elif request.resolver_match.url_name == 'prediction_report' or request.resolver_match.url_name == 'combined_report' %}class="active" aria-current="page"{% endif %}>Reports</a>
-    <a href="{% url 'personal_goals' %}" {% if request.resolver_match.url_name == 'personal_goals' %}class="active" aria-current="page"{% endif %}>Personal goals</a>
-    <a href="{% url 'profile' %}" {% if request.resolver_match.url_name == 'profile' %}class="active" aria-current="page"{% endif %}>Patient Profile</a>
+    <a href="{% url 'dashboard' %}" data-dashboard-overview {% if request.resolver_match.url_name == 'dashboard' %}class="active" aria-current="page"{% endif %}>Dashboard</a>
     <a href="{% url 'stroke_predict' %}" {% if request.resolver_match.url_name == 'stroke_predict' %}class="active" aria-current="page"{% endif %}>Stroke Check</a>
     <a href="{% url 'lung_predict' %}" {% if request.resolver_match.url_name == 'lung_predict' %}class="active" aria-current="page"{% endif %}>Lung Check</a>
     <a href="{% url 'diet_home' %}" {% if request.resolver_match.url_name == 'diet_home' %}class="active" aria-current="page"{% endif %}>Diet Guide</a>
     <a href="{% url 'exercises' %}" {% if request.resolver_match.url_name == 'exercises' %}class="active" aria-current="page"{% endif %}>Exercise Plan</a>
     <a href="{% url 'doctors' %}" {% if request.resolver_match.url_name == 'doctors' %}class="active" aria-current="page"{% endif %}>Doctors</a>
-    <a href="{% url 'appointments' %}" {% if request.resolver_match.url_name == 'appointments' %}class="active" aria-current="page"{% endif %}>Appointments</a>
-    <a href="{% url 'notifications' %}" {% if request.resolver_match.url_name == 'notifications' %}class="active" aria-current="page"{% endif %}>Notifications</a>
-    <a href="{% url 'data_tables' %}" {% if request.resolver_match.url_name == 'data_tables' %}class="active" aria-current="page"{% endif %}>Data Map</a>
+    {% if user.can_manage_users %}
+    <a href="{% url 'user_management' %}" {% if request.resolver_match.url_name == 'user_management' or request.resolver_match.url_name == 'manage_user' or request.resolver_match.url_name == 'activity_log' %}class="active" aria-current="page"{% endif %}>User Management</a>
+    {% endif %}
+    <a href="{% url 'profile' %}" {% if request.resolver_match.url_name == 'profile' %}class="active" aria-current="page"{% endif %}>Patient Profile</a>
+    <a href="{% url 'dashboard' %}#reports" {% if request.resolver_match.url_name == 'dashboard' %}data-dashboard-section{% elif request.resolver_match.url_name == 'prediction_report' or request.resolver_match.url_name == 'combined_report' %}class="active" aria-current="page"{% endif %}>Reports</a>
     <a href="{% url 'logout' %}">Log out</a>
   </nav>
-  <div class="sidebar-note"><strong>Academic System</strong><span>Use results for learning and wellness support, not medical diagnosis.</span></div>
+  <div class="sidebar-note"><strong>Academic Website</strong><span>Use results for learning and wellness support, not medical diagnosis.</span></div>
 </aside>

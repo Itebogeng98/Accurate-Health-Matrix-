@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block content %}
-<section class="auth-shell art-auth login-art">
+<section class="auth-shell auth-refined art-auth login-art">
     <div class="container">
         <div class="auth-layout auth-layout-login">
             <aside class="auth-panel">
@@ -27,7 +28,12 @@
                     </div>
                     <div class="field-group">
                         <label class="form-label" for="id_password">Password</label>
-                        <input class="form-control" id="id_password" type="password" name="password" placeholder="Your password" required>
+                        <div class="password-field">
+                            <input class="form-control" id="id_password" type="password" name="password" autocomplete="current-password" placeholder="Your password" required>
+                            <button class="password-toggle" type="button" aria-label="Show password" aria-controls="id_password" aria-pressed="false" hidden>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="eye-slash" d="m3 3 18 18"/></svg>
+                            </button>
+                        </div>
                     </div>
                     <button class="btn btn-primary auth-submit" type="submit">Login</button>
                 </form>
@@ -37,3 +43,5 @@
     </div>
 </section>
 {% endblock %}
+
+{% block scripts %}<script src="{% static 'js/auth.js' %}" defer></script>{% endblock %}

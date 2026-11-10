@@ -57,6 +57,9 @@ class ArchitectureTests(SimpleTestCase):
 
         walk(get_resolver().url_patterns)
         expected = baseline['routes'] + [
+            ['accounts/users/', 'user_management'],
+            ['accounts/users/activity/', 'activity_log'],
+            ['accounts/users/<int:user_id>/<str:action>/', 'manage_user'],
             ['dashboard/reports/latest/', 'combined_report'],
             ['dashboard/reports/<int:record_id>/', 'prediction_report'],
             ['dashboard/journey/', 'health_timeline'],
@@ -146,7 +149,7 @@ class WorkflowTests(TestCase):
 
     def test_signup_and_approval_gate(self):
         response = self.client.post(reverse('signup_api'), {
-            'email': 'new@example.test', 'password': 'test-password',
+            'email': 'new@example.test', 'password': 'test-password', 'confirm_password': 'test-password',
             'first_name': 'New', 'last_name': 'Patient',
         }, content_type='application/json')
         self.assertEqual(response.status_code, 201)
@@ -176,7 +179,7 @@ class WorkflowTests(TestCase):
         with patch('apps.authentication.views.requests.get', return_value=Mock(status_code=200, json=lambda: {'data': []})), \
              patch('apps.authentication.views.requests.post', return_value=Mock(status_code=201, json=lambda: {})) as post:
             response = self.client.post(reverse('register'), {
-                'email': 'new@example.test', 'password': 'test-password',
+                'email': 'new@example.test', 'password': 'test-password', 'confirm_password': 'test-password',
                 'first_name': 'New', 'last_name': 'Patient',
             })
             self.assertRedirects(response, reverse('login'))

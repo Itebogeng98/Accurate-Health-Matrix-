@@ -24,6 +24,7 @@
       <a class="btn btn-outline-primary" href="{% url 'combined_report' %}">Combined stroke &amp; lung report</a>
     </div>
     {% endif %}
+    {% include 'core/predictions/doctor_support.html' with support=result.doctor_support %}
     <h3>Recommended Foods</h3>
     <div class="cards small">
         {% for food in result.foods %}

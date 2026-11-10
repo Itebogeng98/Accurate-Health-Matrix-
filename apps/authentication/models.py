@@ -95,7 +95,80 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         ordering = ['email']
 
+    @property
+    def can_manage_users(self):
+        return self.is_active and (self.is_staff or self.is_superuser)
+
     def __str__(self):
         return self.email
 
+
+
+
+ACTIVITY_PAGE_NAMES = {
+    'home': 'Home', 'dashboard': 'Dashboard',
+    'user_management': 'User Management', 'manage_user': 'Manage a user',
+    'activity_log': 'User Activity Log', 'profile': 'My Profile',
+    'register': 'Registration', 'signup_api': 'Registration',
+    'login': 'Sign In', 'obtain_token': 'Sign In', 'logout': 'Sign Out',
+    'stroke_predict': 'Stroke Health Check', 'stroke_prediction_api': 'Stroke Health Check',
+    'lung_predict': 'Lung Health Check', 'lung_prediction_api': 'Lung Health Check',
+    'prediction_report': 'Health Report', 'combined_report': 'Combined Health Report',
+    'diet_home': 'Diet Guide', 'doctors': 'Doctors', 'exercises': 'Exercise Plan',
+    'health_timeline': 'Health Timeline', 'daily_checkin': 'Daily Check-in',
+    'personal_goals': 'Personal Goals', 'goal_progress': 'Goal Progress',
+    'appointments': 'Appointments', 'notifications': 'Notifications',
+    'dashboard_dataset': 'Dataset Details', 'data_tables': 'Health Datasets',
+    'retrain_models_api': 'Update Prediction Models',
+}
+
+
+class UserActivity(models.Model):
+    actor = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name='activity_events')
+    actor_email = models.EmailField()
+    action = models.CharField(max_length=80)
+    target_email = models.EmailField(blank=True)
+    route = models.CharField(max_length=100, blank=True)
+    method = models.CharField(max_length=10, blank=True)
+    response_status = models.PositiveSmallIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-created_at', '-pk']
+
+    @property
+    def page_label(self):
+        return ACTIVITY_PAGE_NAMES.get(self.route, 'Other page' if self.route else 'Not recorded')
+
+    @property
+    def action_label(self):
+        return {'Submitted request': 'Submitted a form', 'Authentication request failed': 'Sign-in attempt failed'}.get(self.action, self.action)
+
+    @property
+    def outcome_label(self):
+        code = self.response_status
+        if code is None:
+            return 'Not recorded'
+        if 200 <= code < 300:
+            return 'Successful'
+        if 300 <= code < 400:
+            if self.action in ('Edited user', 'Approved user', 'Declined user', 'Deleted user', 'Signed in', 'Signed out'):
+                return 'Successful'
+            return 'Moved to another page'
+        if code in (401, 403):
+            return 'Access denied'
+        if code == 404:
+            return 'Page not found'
+        if code == 400:
+            return 'Please check the entered details'
+        if code == 405:
+            return 'Action not allowed'
+        if code == 429:
+            return 'Too many attempts - try again later'
+        if code >= 500:
+            return 'System problem - try again later'
+        return 'Could not complete'
+
+    def __str__(self):
+        return f'{self.actor_email}: {self.action}'
 

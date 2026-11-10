@@ -1,0 +1,15 @@
+{% extends 'authentication/management_base.html' %}
+{% block workspace_title %}User Management{% endblock %}
+{% block management_content %}
+<section class="page-head"><h1>Manage users</h1><p>Review registrations, update profiles, and manage access.</p></section>
+<form method="get" class="management-filters">
+  <label for="user-search">Find a user</label><input id="user-search" class="form-control" name="q" value="{{ query }}" placeholder="Name or email">
+  <label for="user-status">Status</label><select id="user-status" class="form-select" name="status"><option value="all">All users</option><option value="pending" {% if state == 'pending' %}selected{% endif %}>Pending</option><option value="approved" {% if state == 'approved' %}selected{% endif %}>Approved</option><option value="declined" {% if state == 'declined' %}selected{% endif %}>Declined / disabled</option></select><button class="btn btn-primary">Search</button>
+</form>
+<div class="table-wrap"><table><caption>{{ page.paginator.count }} users</caption><thead><tr><th>Email / name</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody>
+{% for account in page %}<tr><td>{{ account.email }}<br><small>{{ account.first_name }} {{ account.last_name }}</small></td><td>{{ account.role }}{% if account.can_manage_users %} (Administrator){% endif %}</td><td>{% if not account.is_active %}Declined / disabled{% elif account.is_approved %}Approved{% else %}Pending{% endif %}</td><td>{{ account.join_date|date:'d M Y' }}</td><td>
+{% if account.pk == user.pk or account.is_staff or account.is_superuser %}Protected administrator{% else %}
+<div class="management-actions"><a href="{% url 'manage_user' account.pk 'edit' %}">Edit</a>{% if not account.is_active or not account.is_approved %}<a href="{% url 'manage_user' account.pk 'approve' %}">Approve</a>{% endif %}{% if account.is_active %}<a href="{% url 'manage_user' account.pk 'decline' %}">Decline</a>{% endif %}<a class="text-danger" href="{% url 'manage_user' account.pk 'delete' %}">Delete</a></div>{% endif %}</td></tr>
+{% empty %}<tr><td colspan="5">No users match your search.</td></tr>{% endfor %}</tbody></table></div>
+{% include 'authentication/management_pagination.html' %}
+{% endblock %}

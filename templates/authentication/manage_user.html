@@ -1,0 +1,12 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}Manage user{% endblock %}
+{% block workspace_content %}
+<section class="page-head"><h1>{{ action|capfirst }} user</h1><p>{{ target.email }}</p></section>
+<div class="form-box"><form method="post">{% csrf_token %}
+{% if action == 'edit' %}{{ form.as_p }}
+{% elif action == 'delete' %}<p><strong>Permanently delete this account?</strong> Their linked reports and other account records will also be removed. Activity log entries are retained. This cannot be undone.</p>
+{% elif action == 'decline' %}<p>Decline this registration or disable this user's current access? They will be unable to sign in or continue authenticated access. You can approve the account again later.</p>
+{% else %}<p>Approve this user and allow them to sign in?</p>{% endif %}
+<button type="submit" class="btn {% if action == 'delete' %}btn-danger{% else %}btn-primary{% endif %}">Confirm {{ action }}</button> <a class="btn btn-outline-primary" href="{% url 'user_management' %}">Cancel</a>
+</form></div>
+{% endblock %}

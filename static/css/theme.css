@@ -1,0 +1,133 @@
+/* Shared AHM brand: the landing page palette across every application layout. */
+:root {
+    --health-navy: #10334b;
+    --health-teal: #007f82;
+    --health-mist: #f1f7f6;
+    --health-mint: #dcefed;
+    --ink: #10334b;
+    --ink-soft: #20485d;
+    --paper: #f1f7f6;
+    --paper-2: #eaf4f3;
+    --muted: #496373;
+    --line: #d4e3e5;
+    --coral: #007f82;
+    --lime: #dcefed;
+    --cyan: #58c6c5;
+    --green: #007f82;
+    --shadow: 0 12px 36px rgba(16,51,75,.08);
+    --bs-primary: #007f82;
+    --bs-primary-rgb: 0,127,130;
+    --bs-link-color: #007377;
+    --bs-link-hover-color: #10334b;
+}
+body { background: var(--health-mist); color: var(--health-navy); }
+a { color: #007377; }
+a:hover { color: var(--health-navy); }
+.editorial-nav, .navbar { background: rgba(255,255,255,.97) !important; border-color: var(--line) !important; }
+.nav-link { color: #345363; text-transform: none; font-weight: 600; }
+.nav-link:hover, .nav-link:focus { color: var(--health-teal); }
+.btn, .btn-small { border-radius: 8px; font-weight: 700; }
+.btn-primary, .btn:not(.btn-outline-primary):not(.btn-light):not(.btn-outline-light) { background: var(--health-teal); border-color: var(--health-teal); box-shadow: none; color: #fff !important; }
+.btn-primary:hover, .btn-primary:focus, .btn:not(.btn-outline-primary):not(.btn-light):not(.btn-outline-light):hover { background: var(--health-navy); border-color: var(--health-navy); }
+.btn-outline-primary, .btn-outline-light { color: var(--health-teal); border-color: var(--health-teal); }
+.btn-outline-primary:hover, .btn-outline-light:hover { background: var(--health-mint); border-color: var(--health-teal); color: var(--health-navy) !important; }
+.form-control:focus, .form-select:focus, .form-box input:focus, .form-box select:focus, .form-box textarea:focus { border-color: var(--health-teal); box-shadow: 0 0 0 .2rem rgba(0,127,130,.14); }
+.hero-kicker.dark, .hero-eyebrow { color: var(--health-teal); border-color: #a9d6d4; }
+.page-head, .form-box, .auth-card, .info-card, .card, .result, .stat-card { background: #fff; border-color: var(--line); box-shadow: var(--shadow); }
+.site-footer { background: var(--health-mist); color: var(--health-navy); border-top: 1px solid var(--line); }
+.footer-grid strong, .footer-credit strong { color: var(--health-navy); }
+.footer-grid p, .footer-credit p { color: var(--muted); }
+.footer-credit { border-color: var(--line); }
+.footer-social-links a { color: #006b6e; }
+.footer-social-links a:hover { color: var(--health-navy); }
+.auth-shell { background: var(--health-mist); }
+.auth-panel, .login-art .auth-panel { background: linear-gradient(180deg,rgba(16,51,75,.15),rgba(16,51,75,.96) 85%),url('../images/Accurate HealthMatrix Hospital Entrance.png') center/cover; }
+.login-art .auth-panel { background-image: linear-gradient(180deg,rgba(16,51,75,.12),rgba(16,51,75,.96) 85%),url('../images/doctor_landing_page.png'); background-position: 70% center; }
+.auth-panel, .auth-panel h1 { color: #fff; }
+.auth-panel p, .auth-benefits span, .auth-metric span { color: #e4f1f4; }
+.auth-panel .hero-kicker, .auth-benefits strong, .auth-metric strong { color: #b9f0e9; }
+.auth-panel .hero-kicker { border-color: #80bdbd; }
+.matrix-dashboard.dashboard-refresh, .dashboard-refresh .matrix-topbar { background: var(--health-mist); }
+.dashboard-refresh .matrix-sidebar { background: var(--health-navy); color: #fff; }
+.dashboard-refresh .matrix-logo { display: flex; justify-content: center; background: #fff; padding: .6rem; border-radius: 10px; }
+.matrix-logo img { display: block; width: 100%; max-width: 220px; height: auto; }
+.dashboard-refresh .matrix-menu a { color: #d3e5ec; border-radius: 8px; }
+.dashboard-refresh .matrix-menu a:hover { color: #fff; background: #204e63; }
+.dashboard-refresh .matrix-menu a.active { background: var(--health-mint); color: var(--health-navy); }
+.sidebar-note { background: #1d465b; }
+.sidebar-note strong { color: #fff; }
+.sidebar-note span { color: #d3e5ec; }
+.matrix-kicker, .journey-eyebrow, .workspace-content .stat-card strong { color: var(--health-teal); }
+.topbar-user > span { background: var(--health-mint); color: var(--health-navy); }
+.dashboard-refresh .matrix-hero-card { position: relative; isolation: isolate; overflow: hidden; grid-template-columns: minmax(0, 1fr); padding: 2rem; background: #edf4fb; color: var(--health-navy); border: 1px solid var(--line); }
+.dashboard-refresh .matrix-hero-card > div { position: relative; z-index: 2; max-width: 65%; }
+.dashboard-hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 75% center; z-index: 0; }
+.dashboard-refresh .matrix-hero-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg,#edf4fb 10%,rgba(237,244,251,.97) 38%,rgba(237,244,251,.65) 60%,transparent 85%); z-index: 1; }
+.dashboard-refresh .matrix-hero-card h2 { color: var(--health-navy); }
+.dashboard-refresh .matrix-hero-card p { color: #345363; }
+.dashboard-refresh .matrix-hero-card .matrix-kicker { color: #006b6e; }
+.dashboard-refresh .matrix-actions .btn-primary { color: #fff; background: var(--health-teal); border-color: var(--health-teal); }
+.dashboard-refresh .matrix-actions .btn-primary:hover { background: var(--health-navy); border-color: var(--health-navy); }
+.dashboard-refresh .matrix-actions .btn-outline-primary { color: #006b6e; background: #ffffffb8; border-color: var(--health-teal); }
+.dashboard-refresh .matrix-actions .btn-outline-primary:hover { background: var(--health-mint); }
+.dashboard-refresh .matrix-stats article { border-top-color: var(--health-teal); }
+.dashboard-refresh .matrix-stats article:nth-child(2) { border-top-color: var(--health-navy); }
+.dashboard-refresh .matrix-stats article:nth-child(3), .dashboard-refresh .matrix-stats article:nth-child(4) { border-top-color: #58aead; }
+.dashboard-tabs a:hover, .dashboard-tabs a[aria-current] { color: #006b6e; border-color: var(--health-teal); background: var(--health-mint); }
+.dashboard-refresh .matrix-panel, .journey-panel { background: #fff; border-color: var(--line); }
+.dashboard-refresh .dataset-item { background: #eaf4f3; color: var(--health-navy); border-color: var(--line); }
+.dashboard-refresh .dataset-item strong, .dashboard-refresh .sidebar-section-title strong { color: var(--health-navy); }
+.dashboard-refresh .dataset-item small, .dashboard-refresh .dataset-item em, .dashboard-refresh .sidebar-section-title span { color: var(--muted); }
+.dashboard-refresh .dataset-item.missing span { background: #fff0da; color: #80501b; }
+.wellness-links a, .wellness-links a:nth-child(2), .wellness-links a:nth-child(3), .journey-reflection { background: #eaf4f3; color: var(--health-navy); border-color: var(--line); }
+.workspace-content .table-wrap th, .matrix-table th { background: #eaf4f3; color: var(--health-navy); }
+.risk-chip, .journey-badge, .journey-date, .journey-symbol { background: var(--health-mint); color: #006b6e; }
+.journey-reflection > p, .journey-count span { color: var(--muted); }
+.journey-filters a[aria-current] { background: var(--health-teal); border-color: var(--health-teal); }
+.goal-card progress, .checkin-ring { accent-color: var(--health-teal); }
+.goal-card progress::-webkit-progress-value, .goal-card progress::-moz-progress-bar { background: var(--health-teal); }
+.report-brand { color: var(--health-teal); }
+.report-heading { border-color: var(--health-teal); }
+.report-scores > div { background: #eaf4f3; border-color: var(--line); }
+.dataset-hero { background-image: linear-gradient(90deg,rgba(16,51,75,.97),rgba(16,51,75,.82)),url('../images/Accurate HealthMatrix Hospital Entrance.png'); }
+.workspace-brand-banner { display: grid; grid-template-columns: minmax(0,1fr) 32%; align-items: center; min-height: 126px; overflow: hidden; margin-bottom: 1rem; background: #eaf4f3; border: 1px solid var(--line); border-radius: 14px; }
+.workspace-brand-banner > div { padding: 1.2rem 1.5rem; }
+.workspace-brand-banner strong { display: block; font-size: 1.25rem; color: var(--health-navy); }
+.workspace-brand-banner p { color: var(--muted); font-size: .8rem; margin: .5rem 0 0; }
+.workspace-brand-banner img { width: 100%; height: 140px; object-fit: cover; }
+@media (max-width: 1000px) { .dashboard-refresh .matrix-logo { width: 205px; } }
+@media (max-width: 600px) {
+    .dashboard-refresh .matrix-hero-card { padding: 1.3rem; padding-top: 175px; }
+    .dashboard-refresh .matrix-hero-card > div { max-width: 100%; }
+    .dashboard-hero-photo { height: 195px; }
+    .dashboard-refresh .matrix-hero-card::after { background: linear-gradient(0deg,#edf4fb 0%,#edf4fb 47%,transparent 90%); }
+    .workspace-brand-banner { grid-template-columns: minmax(0,1fr) 28%; }
+    .workspace-brand-banner > div { padding: 1rem; }
+    .workspace-brand-banner strong { font-size: 1rem; }
+    .workspace-brand-banner p { display: none; }
+    .workspace-brand-banner img { height: 126px; }
+}
+@media print { .workspace-brand-banner { display: none; } .print-report { color: #111; } }
+
+/* Match the compact workspace components as well as the public layouts. */
+.workspace-content { color: var(--health-navy); }
+.workspace-content .page-head { background: linear-gradient(110deg,#eaf4f3,#f7fbfb); border-color: var(--line); }
+.workspace-content .btn-primary { background: var(--health-teal); border-color: var(--health-teal); }
+.workspace-content .btn-primary:hover { background: var(--health-navy); border-color: var(--health-navy); }
+.workspace-content .btn-outline-primary { color: #006b6e; border-color: var(--health-teal); }
+.workspace-content .btn-outline-primary:hover { color: var(--health-navy); background: var(--health-mint); }
+.workspace-content .info-card::before, .workspace-content .info-card:nth-child(3n+2)::before, .workspace-content .info-card:nth-child(3n+3)::before { background: var(--health-teal); }
+.workspace-content .pill { color: #006b6e; background: var(--health-mint); }
+.workspace-content summary, .dashboard-refresh .matrix-table summary, .timeline-event a, .journey-reflection > a { color: #006b6e; }
+.checkin-ring { background: conic-gradient(var(--health-teal) var(--week-progress),#dcefed 0); }
+.goal-card progress::-webkit-progress-value { background: var(--health-teal); }
+.goal-card progress::-moz-progress-bar { background: var(--health-teal); }
+.report-brand img { width: 220px; max-width: 100%; height: auto; }
+.report-brand { display: block; width: 220px; max-width: 100%; background: #fff; }
+.report-brand img { display: block; object-fit: contain; }
+.report-academic-notice { margin: 1rem 0; padding: .85rem 1rem; border: 1px solid #9fc9c9; border-left: 4px solid #007f82; border-radius: 8px; background: #eaf4f3; color: #10334b; font-size: .85rem; break-inside: avoid; }
+.report-academic-notice strong { display: block; margin-bottom: .3rem; }
+.report-academic-notice p, .report-disclaimer p { margin: 0; }
+.report-disclaimer strong { display: block; margin-bottom: .35rem; }
+@media print { .report-brand, .report-brand img { display: block !important; visibility: visible !important; } .report-academic-notice { background: #fff; color: #111; border-color: #555; } .report-disclaimer { color: #111; } }
+@media print { .matrix-dashboard.dashboard-refresh { background: #fff; } .workspace-content { color: #111; } }

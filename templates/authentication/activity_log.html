@@ -1,0 +1,37 @@
+{% extends 'authentication/management_base.html' %}
+
+{% block management_content %}
+<section class="page-head"><h1>User Logs</h1><p>Activity recorded from the time logging was enabled. Shows pages people visited, forms they submitted and changes made to user accounts. Passwords, health inputs and private form contents are excluded.</p></section>
+<form method="get" action="{% url 'user_management' %}" class="management-filters">
+<input type="hidden" name="tab" value="logs">
+{{ filter_form.non_field_errors }}
+{% for field in filter_form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}
+<button class="btn btn-primary">Apply filters</button><a href="{% url 'user_management' %}?tab=logs">Clear filters</a>
+</form>
+<form method="post" action="{% url 'user_management' %}?tab=logs">
+{% csrf_token %}<input type="hidden" name="tab" value="logs">
+{% for key, value in filter_values.items %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endfor %}
+<div class="management-actions mb-3">
+<button class="btn btn-outline-danger" type="submit" name="operation" value="selected" {% if not page.paginator.count %}disabled{% endif %}>Delete selected logs</button>
+<button class="btn btn-outline-danger" type="submit" name="operation" value="filtered" {% if not page.paginator.count %}disabled{% endif %}>Delete all {{ page.paginator.count }} matching logs</button>
+</div>
+<p class="small">Select individual logs or delete all logs matching your filters across every page. You will review the number before deleting.</p>
+<div class="table-wrap"><table><caption>{{ page.paginator.count }} activities recorded</caption><thead><tr><th><input type="checkbox" id="select-page-logs" aria-label="Select all logs on this page"></th><th>Date and time</th><th>User</th><th>What they did</th><th>Account affected</th><th>Page visited</th><th>Outcome</th></tr></thead><tbody>
+{% for entry in page %}<tr><td><input type="checkbox" name="log_ids" value="{{ entry.pk }}" aria-label="Select log for {{ entry.actor_email }} at {{ entry.created_at|date:'d M Y H:i:s' }}"></td><td>{{ entry.created_at|date:'d M Y H:i:s' }}</td><td>{{ entry.actor_email }}</td><td>{{ entry.action_label }}</td><td>{{ entry.target_email|default:'Not applicable' }}</td><td>{{ entry.page_label }}</td><td>{{ entry.outcome_label }}</td></tr>{% empty %}<tr><td colspan="7">No recorded activity matches your search.</td></tr>{% endfor %}
+</tbody></table></div>
+</form>
+{% include 'authentication/management_pagination.html' %}
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+const selectPageLogs = document.getElementById('select-page-logs');
+const logCheckboxes = [...document.querySelectorAll('input[name="log_ids"]')];
+selectPageLogs.addEventListener('change', () => { logCheckboxes.forEach(box => { box.checked = selectPageLogs.checked; }); selectPageLogs.indeterminate = false; });
+logCheckboxes.forEach(box => box.addEventListener('change', () => {
+  selectPageLogs.checked = logCheckboxes.every(item => item.checked);
+  selectPageLogs.indeterminate = logCheckboxes.some(item => item.checked) && !selectPageLogs.checked;
+}));
+</script>
+{% endblock %}

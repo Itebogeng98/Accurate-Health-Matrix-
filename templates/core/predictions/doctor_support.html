@@ -1,0 +1,20 @@
+{% if support.doctors %}
+<section class="doctor-support {% if support.high_risk %}doctor-support-high{% endif %}" aria-label="Doctors for this result">
+  <h3>{% if support.high_risk %}High-risk result: professional review{% else %}Doctors you can contact{% endif %}</h3>
+  {% if support.high_risk %}<p><strong>Arrange a review with a qualified healthcare professional to discuss this result.</strong> A high model score does not confirm disease.</p>{% endif %}
+  <p>These Gauteng {{ support.specialist_label }} are listed in our directory. Confirm availability, fees and referral requirements directly with the practice.</p>
+  <div class="doctor-support-grid">
+    {% for doctor in support.doctors %}
+    <article class="doctor-support-card">
+      <h4>{{ doctor.name }}</h4>
+      <p>{{ doctor.specialty }}<br>{{ doctor.city }}</p>
+      {% if doctor.phone %}<p><strong>Phone:</strong> {{ doctor.phone }}</p>{% endif %}
+      {% if doctor.email %}<p><a href="mailto:{{ doctor.email }}">{{ doctor.email }}</a></p>{% endif %}
+      {% if doctor.website %}<a class="btn btn-outline-primary" href="{{ doctor.website }}" target="_blank" rel="noopener noreferrer">Practice website / contact</a>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  <a href="{% url 'doctors' %}?speciality={{ support.specialty }}">View more {{ support.specialist_label }}</a>
+  <p class="small text-muted mt-2">Directory suggestions are not a referral or a confirmed booking. If you think you are having a medical emergency, seek emergency medical care rather than waiting for an appointment.</p>
+</section>
+{% endif %}

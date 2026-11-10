@@ -47,6 +47,7 @@ def register_view(request):
             'role_id': request.POST.get('role_id'),
             'phone_number': request.POST.get('phone_number'),
             'password': request.POST.get('password'),
+            'confirm_password': request.POST.get('confirm_password'),
         }
 
         try:

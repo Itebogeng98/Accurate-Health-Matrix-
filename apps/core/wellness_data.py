@@ -44,8 +44,8 @@ DOCTORS = [
         'specialty': 'Pulmonologist / Lung',
         'city': 'Johannesburg',
         'address': 'Johannesburg, Gauteng',
-        'phone': '',
-        'email': '',
+        'phone': '011 482 1650 / 011 480 5777',
+        'email': 'reception@bhamjeepractice.co.za',
         'website': 'https://bhamjeepractice.co.za/',
         'notes': 'Registered specialist pulmonologist.'
     },
@@ -131,3 +131,20 @@ EXERCISES = [
         'safety_note': 'Do not stretch into pain.'
     },
 ]
+
+
+def prediction_doctor_support(disease, risk):
+    """Match directory entries to the check; never infer a diagnosis."""
+    specialty = {'stroke': 'neurologist', 'lung_cancer': 'pulmonologist'}.get(disease)
+    if specialty is None:
+        return {'doctors': []}
+    matches = [doctor for doctor in DOCTORS if specialty in doctor['specialty'].lower()]
+    # Prefer the lung practices whose contact information is available.
+    if disease == 'lung_cancer':
+        matches = [doctor for doctor in matches if doctor['name'] in ('Dr Shiraaz Bhamjee', 'Dr M Laher')]
+    return {
+        'doctors': matches[:2],
+        'specialty': specialty,
+        'high_risk': str(risk).strip().lower() == 'high risk',
+        'specialist_label': 'lung specialists' if disease == 'lung_cancer' else 'neurology specialists',
+    }

@@ -1,0 +1,9 @@
+{% extends 'base/patient_workspace.html' %}
+{% block workspace_title %}User Management{% endblock %}
+{% block workspace_content %}
+<nav class="dashboard-tabs" aria-label="User Management sections">
+  <a href="{% url 'user_management' %}" {% if active_tab != 'logs' %}aria-current="page"{% endif %}>Users</a>
+  <a href="{% url 'user_management' %}?tab=logs" {% if active_tab == 'logs' %}aria-current="page"{% endif %}>User Logs</a>
+</nav>
+{% block management_content %}{% endblock %}
+{% endblock %}

@@ -1,4 +1,7 @@
 {% extends 'base/base.html' %}
+{% load static %}
+{% block body_class %}{% if user.is_authenticated %}patient-workspace-page{% endif %}{% endblock %}
+{% block messages %}{% if not user.is_authenticated %}{{ block.super }}{% endif %}{% endblock %}
 {% block nav_class %}{% if user.is_authenticated %}dashboard-global-hidden{% endif %}{% endblock %}
 {% block footer_class %}{% if user.is_authenticated %}dashboard-global-hidden{% endif %}{% endblock %}
 {% block main_class %}{% if user.is_authenticated %}dashboard-shell{% endif %}{% endblock %}
@@ -9,13 +12,25 @@
   <div class="matrix-main">
     <header class="matrix-topbar">
       <div><span class="matrix-kicker">Patient workspace</span><h1>{% block workspace_title %}Dashboard{% endblock %}</h1></div>
-      <div class="topbar-cluster"><div class="topbar-user">
+      <div class="topbar-cluster">{% if user.can_manage_users %}<a class="btn btn-outline-primary btn-sm" href="{% url 'user_management' %}">User Management</a>{% endif %}<div class="topbar-user">
         <span>{{ user.first_name|slice:':1'|upper }}{{ user.last_name|slice:':1'|upper }}</span>
         <div><strong><a href="{% url 'profile' %}">{{ user.get_full_name|default:user.email }}</a></strong><small>{{ user.email }}</small></div>
       </div></div>
     </header>
 {% endif %}
-<div class="workspace-content">{% block workspace_content %}{% endblock %}</div>
+<div class="workspace-content" tabindex="0" role="region" aria-label="Workspace content">
+{% if user.is_authenticated and messages %}
+  <div class="workspace-messages">
+    {% for message in messages %}<div class="alert alert-{{ message.tags|default:'info' }}" role="status">{{ message }}</div>{% endfor %}
+  </div>
+{% endif %}
+{% block workspace_banner %}
+<div class="workspace-brand-banner">
+  <div><span class="matrix-kicker">Accurate HealthMatrix</span><strong>A clearer picture of your health.</strong><p>Health awareness today. Healthier choices every day.</p></div>
+  <img src="{% static 'images/Accurate HealthMatrix Hospital Entrance.png' %}" alt="Accurate HealthMatrix building" width="1672" height="941">
+</div>
+{% endblock %}
+{% block workspace_content %}{% endblock %}</div>
 {% if user.is_authenticated %}
   </div>
 </section>

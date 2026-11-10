@@ -1,0 +1,9 @@
+{% extends 'authentication/management_base.html' %}
+{% block management_content %}
+<section class="page-head"><h1>Delete {{ count }} user logs?</h1><p>This permanently removes the selected activity history. It cannot be undone. User accounts and health reports will stay in place.</p></section>
+<form method="post" action="{% url 'user_management' %}?tab=logs">
+{% csrf_token %}<input type="hidden" name="tab" value="logs"><input type="hidden" name="operation" value="confirm"><input type="hidden" name="confirmation" value="{{ confirmation }}">
+<p>Logs added after your selection will stay in the log. A record of this deletion will also be kept.</p>
+<button class="btn btn-danger" type="submit">Permanently delete {{ count }} logs</button> <a class="btn btn-outline-primary" href="{{ return_url }}">Cancel</a>
+</form>
+{% endblock %}

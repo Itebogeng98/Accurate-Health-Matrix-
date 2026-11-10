@@ -27,7 +27,7 @@ from .services import (
     _save_prediction, get_patient_context, get_dataset_by_slug,
     read_dataset_preview, read_dataset_from_kaggle,
 )
-from .wellness_data import DOCTORS, EXERCISES
+from .wellness_data import DOCTORS, EXERCISES, prediction_doctor_support
 from ml.prediction import predict_stroke, predict_lung_cancer
 from ml.recommendation import recommend_diet
 from ml.nutrition import search_foods, SOURCE_URL as NUTRITION_SOURCE_URL
@@ -148,6 +148,7 @@ def prediction_report(request, record_id=None):
             'record': record,
             'score': round(record.probability * 100, 2),
             'inputs': inputs,
+            'doctor_support': prediction_doctor_support(record.disease, record.risk_level),
         })
     return render(request, 'core/predictions/report.html', {
         'reports': reports,
@@ -176,6 +177,7 @@ def stroke_predict(request):
             'risk': risk,
             'foods': foods,
             'advice': advice,
+            'doctor_support': prediction_doctor_support('stroke', risk),
         }
 
     return render(request, 'core/predictions/stroke.html', {'form': form, 'result': result})
@@ -200,6 +202,7 @@ def lung_predict(request):
             'risk': risk,
             'foods': foods,
             'advice': advice,
+            'doctor_support': prediction_doctor_support('lung_cancer', risk),
         }
 
     return render(request, 'core/predictions/lung.html', {'form': form, 'result': result})
