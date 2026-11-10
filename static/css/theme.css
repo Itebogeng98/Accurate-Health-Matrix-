@@ -131,3 +131,12 @@ a:hover { color: var(--health-navy); }
 .report-disclaimer strong { display: block; margin-bottom: .35rem; }
 @media print { .report-brand, .report-brand img { display: block !important; visibility: visible !important; } .report-academic-notice { background: #fff; color: #111; border-color: #555; } .report-disclaimer { color: #111; } }
 @media print { .matrix-dashboard.dashboard-refresh { background: #fff; } .workspace-content { color: #111; } }
+.appointment-booking-form { display: grid; gap: 1rem; }
+.booking-field > label { display: block; font-weight: 700; margin-bottom: .35rem; }
+.booking-field > .small { margin: .4rem 0 0; }
+.booking-consent label { display: flex; align-items: flex-start; gap: .65rem; font-size: .85rem; }
+.booking-consent input[type=checkbox] { width: 18px; height: 18px; flex: 0 0 18px; margin-top: .2rem; accent-color: var(--health-teal); }
+.appointment-booking-form > button { justify-self: start; }
+.appointment-card form { margin-top: .75rem; }
+.report-booking-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
+@media print { .report-booking-actions { display: none; } }

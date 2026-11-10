@@ -90,6 +90,16 @@ class Appointment(models.Model):
     preferred_date = models.DateField()
     notes = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    doctor_name = models.CharField(max_length=160, blank=True)
+    doctor_email = models.EmailField(blank=True)
+    report = models.ForeignKey(PredictionRecord, null=True, blank=True, on_delete=models.SET_NULL,
+                               related_name='appointments')
+    request_token = models.UUIDField(unique=True, null=True, blank=True, editable=False)
+    email_status = models.CharField(max_length=16, default='not_sent', choices=[
+        ('not_sent', 'Not sent'), ('sending', 'Sending'), ('accepted', 'Accepted for delivery'),
+        ('failed', 'Not sent'), ('unknown', 'Delivery unconfirmed'),
+    ])
+    email_sent_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

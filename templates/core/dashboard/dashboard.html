@@ -46,7 +46,7 @@
                 <td>{{ r.get_disease_display }}</td>
                 <td><span class="risk-chip">{{ r.risk_level }}</span></td>
                 <td>{{ r.probability_percent|floatformat:2 }}%</td>
-                <td><details><summary>View advice</summary>{{ r.recommendation }}</details><a href="{% url 'prediction_report' r.pk %}">View / print report</a></td>
+                <td><details><summary>View advice</summary>{{ r.recommendation }}</details><a href="{% url 'prediction_report' r.pk %}">View / print report</a><br><a href="{% url 'appointments' %}?report={{ r.pk }}">Book an appointment</a></td>
               </tr>
             {% empty %}
               <tr><td colspan="5">No predictions yet. Start with a stroke or lung risk check.</td></tr>

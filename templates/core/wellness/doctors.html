@@ -28,4 +28,11 @@
   </article>
   {% endfor %}
 </div>
+<section class="matrix-panel">
+  <h2>Appointment testing contacts</h2>
+  <p>These addresses belong to the website developer and are for testing the booking email and PDF attachment. They are not doctors or clinical services.</p>
+  <div class="doctor-support-grid">
+    {% for contact in test_contacts %}<article class="doctor-support-card"><span class="pill">Test contact</span><h3>{{ contact.name }}</h3><p>{{ contact.email }}</p><a class="btn btn-outline-primary" href="{% url 'appointments' %}?doctor={{ contact.email|urlencode }}">Test an appointment request</a></article>{% endfor %}
+  </div>
+</section>
 {% endblock %}

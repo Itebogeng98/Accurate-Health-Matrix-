@@ -1,41 +1,45 @@
 {% extends 'base/patient_workspace.html' %}
-{% load static %}
 {% block workspace_title %}Appointments{% endblock %}
 {% block workspace_content %}
-
-
-    <section class="support-layout">
-      <article class="matrix-panel support-form-panel">
-        <div class="panel-head">
-          <span class="matrix-kicker">Request follow-up</span>
-          <h3>Book an Appointment</h3>
-        </div>
-        <form method="post" class="support-form">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <button class="btn btn-primary" type="submit">Submit Request</button>
-        </form>
+<section class="support-layout">
+  <article class="matrix-panel support-form-panel">
+    <div class="panel-head"><span class="matrix-kicker">Request follow-up</span><h3>Book an appointment</h3></div>
+    <p>Select a doctor or test email contact and the screening report you want to share. We will email your request with the PDF attached.</p>
+    <p class="small text-muted">Listed contacts have an email address; their appointment availability must be confirmed directly. Your request is not a confirmed booking. The two test contacts belong to the website developer and are not clinical services.</p>
+    {% if has_reports %}
+    <form method="post" class="support-form appointment-booking-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for hidden in form.hidden_fields %}{{ hidden }}{{ hidden.errors }}{% endfor %}
+      {% for field in form.visible_fields %}
+      <div class="booking-field {% if field.name == 'share_report' %}booking-consent{% endif %}">
+        {{ field.errors }}
+        {% if field.name == 'share_report' %}<label for="{{ field.id_for_label }}">{{ field }} <span>{{ field.label }}</span></label>
+        {% else %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endif %}
+        {% if field.help_text %}<p class="small text-muted">{{ field.help_text }}</p>{% endif %}
+      </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Send appointment request &amp; PDF</button>
+    </form>
+    {% else %}<p>Complete a screening first to attach your results.</p><a class="btn btn-primary" href="{% url 'stroke_predict' %}">Stroke check</a> <a class="btn btn-outline-primary" href="{% url 'lung_predict' %}">Lung check</a>{% endif %}
+    <div class="report-academic-notice"><strong>Academic Website</strong><p>Use results for learning and wellness support, not medical diagnosis.</p></div>
+  </article>
+  <article class="matrix-panel">
+    <div class="panel-head"><span class="matrix-kicker">History</span><h3>Your Requests</h3></div>
+    <div class="appointment-list">
+    {% for appointment in appointments %}
+      <article class="appointment-card">
+        <div><strong>{{ appointment.reason }}</strong><span>{{ appointment.preferred_date|date:'M d, Y' }}</span></div>
+        <p>{{ appointment.doctor_name }}{% if appointment.doctor_email %}<br>{{ appointment.doctor_email }}{% endif %}</p>
+        <p>Booking: <strong>{{ appointment.get_status_display }}</strong> &middot; Email: <strong>{{ appointment.get_email_status_display }}</strong></p>
+        {% if appointment.email_status == 'accepted' %}<p class="small">Email accepted for delivery. Await confirmation from the contact.</p>{% endif %}
+        {% if appointment.email_status == 'unknown' or appointment.email_status == 'sending' %}<p class="small">Delivery is unconfirmed. Check with the contact before submitting again.</p>{% endif %}
+        {% if appointment.report_id %}<a href="{% url 'prediction_report' appointment.report_id %}">View attached screening report</a>{% endif %}
+        {% if appointment.email_status == 'failed' %}<form method="post">{% csrf_token %}<input type="hidden" name="retry_appointment" value="{{ appointment.pk }}"><button class="btn btn-outline-primary" type="submit">Retry email with PDF</button></form>{% endif %}
+        {% if appointment.notes %}<p>{{ appointment.notes }}</p>{% endif %}
       </article>
-
-      <article class="matrix-panel">
-        <div class="panel-head">
-          <span class="matrix-kicker">History</span>
-          <h3>Your Requests</h3>
-        </div>
-        <div class="appointment-list">
-          {% for appointment in appointments %}
-            <article class="appointment-card">
-              <div>
-                <strong>{{ appointment.reason }}</strong>
-                <span>{{ appointment.preferred_date|date:'M d, Y' }}</span>
-              </div>
-              <em class="status-pill {{ appointment.status }}">{{ appointment.get_status_display }}</em>
-              {% if appointment.notes %}<p>{{ appointment.notes }}</p>{% endif %}
-            </article>
-          {% empty %}
-            <p class="empty-note">No appointment requests yet.</p>
-          {% endfor %}
-        </div>
-      </article>
-    </section>
+    {% empty %}<p class="empty-note">No appointment requests yet.</p>{% endfor %}
+    </div>
+  </article>
+</section>
 {% endblock %}

@@ -10,6 +10,7 @@
       <p>{{ doctor.specialty }}<br>{{ doctor.city }}</p>
       {% if doctor.phone %}<p><strong>Phone:</strong> {{ doctor.phone }}</p>{% endif %}
       {% if doctor.email %}<p><a href="mailto:{{ doctor.email }}">{{ doctor.email }}</a></p>{% endif %}
+      {% if record and doctor.email %}<p><a class="btn btn-primary" href="{% url 'appointments' %}?report={{ record.pk }}&amp;doctor={{ doctor.email|urlencode }}">Request an appointment</a></p>{% endif %}
       {% if doctor.website %}<a class="btn btn-outline-primary" href="{{ doctor.website }}" target="_blank" rel="noopener noreferrer">Practice website / contact</a>{% endif %}
     </article>
     {% endfor %}

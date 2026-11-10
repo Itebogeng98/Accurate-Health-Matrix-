@@ -12,3 +12,6 @@ matplotlib
 seaborn
 # Optional only when switching from SQLite to MySQL:
 PyMySQL
+
+# Appointment report attachments
+reportlab>=4.4,<6

@@ -11,6 +11,7 @@
     {% if user.can_manage_users %}
     <a href="{% url 'user_management' %}" {% if request.resolver_match.url_name == 'user_management' or request.resolver_match.url_name == 'manage_user' or request.resolver_match.url_name == 'activity_log' %}class="active" aria-current="page"{% endif %}>User Management</a>
     {% endif %}
+    <a href="{% url 'appointments' %}" {% if request.resolver_match.url_name == 'appointments' %}class="active" aria-current="page"{% endif %}>Appointments</a>
     <a href="{% url 'profile' %}" {% if request.resolver_match.url_name == 'profile' %}class="active" aria-current="page"{% endif %}>Patient Profile</a>
     <a href="{% url 'dashboard' %}#reports" {% if request.resolver_match.url_name == 'dashboard' %}data-dashboard-section{% elif request.resolver_match.url_name == 'prediction_report' or request.resolver_match.url_name == 'combined_report' %}class="active" aria-current="page"{% endif %}>Reports</a>
     <a href="{% url 'logout' %}">Log out</a>

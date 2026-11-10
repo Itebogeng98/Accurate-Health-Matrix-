@@ -55,3 +55,23 @@ ASGI_APPLICATION = 'config.asgi.application'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# SendGrid API email. Credentials stay in the environment, never in source control.
+def clean_env_value(name, default=""):
+    return config(name, default=default).strip().strip('"').strip("'")
+
+SENDGRID_API_KEY = clean_env_value('SENDGRID_API_KEY') or clean_env_value('EMAIL_HOST_PASSWORD')
+EMAIL_BACKEND = clean_env_value('EMAIL_BACKEND')
+if EMAIL_BACKEND in ('', 'summit.email_backend.SendGridAPIBackend') or (
+        SENDGRID_API_KEY and EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend'):
+    EMAIL_BACKEND = ('apps.core.email_backend.SendGridAPIBackend' if SENDGRID_API_KEY
+                     else 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = clean_env_value('EMAIL_HOST', 'smtp.sendgrid.net')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_TIMEOUT = config('EMAIL_TIMEOUT', default=15, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = clean_env_value('EMAIL_HOST_USER', 'apikey')
+EMAIL_HOST_PASSWORD = clean_env_value('EMAIL_HOST_PASSWORD') or SENDGRID_API_KEY
+DEFAULT_FROM_EMAIL = clean_env_value('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL

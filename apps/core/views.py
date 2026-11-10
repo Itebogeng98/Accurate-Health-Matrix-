@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import OperationalError, ProgrammingError
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -20,6 +20,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from .appointment_contacts import TEST_CONTACTS
+from .appointment_delivery import send_appointment_email
 from .forms import AppointmentForm, StrokePredictionForm, LungCancerPredictionForm
 from .models import Appointment, Notification, PredictionRecord
 from .journey import wellness_summary
@@ -77,27 +79,62 @@ def dataset_detail(request, dataset_slug):
     return render(request, 'core/dashboard/dataset_detail.html', context)
 
 
-@login_required
-def appointments_view(request):
-    form = AppointmentForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        appointment = form.save(commit=False)
-        appointment.user = request.user
-        appointment.save()
-        Notification.objects.create(
-            user=request.user,
-            title='Appointment request submitted',
-            message=f'Your appointment request for {appointment.preferred_date:%Y-%m-%d} is pending review.',
-        )
-        messages.success(request, 'Appointment request submitted successfully.')
-        return redirect('appointments')
+def _appointment_delivery_message(request, appointment):
+    if appointment.email_status == 'accepted':
+        messages.success(request, 'Your appointment request and PDF report were accepted for email delivery. '
+                         'The doctor must confirm availability; your appointment is not confirmed yet.')
+    elif appointment.email_status in ('unknown', 'sending'):
+        messages.warning(request, 'Email delivery could not be confirmed. Your request is saved. '
+                         'Check with the selected contact before submitting again to avoid duplicates.')
+    else:
+        messages.error(request, 'Your request was saved, but the email was not sent. '
+                       'You can retry from Your Requests after checking the email configuration.')
 
-    context = {
-        **get_patient_context(request.user),
-        'form': form,
-        'appointments': Appointment.objects.filter(user=request.user),
-    }
-    return render(request, 'core/dashboard/appointments.html', context)
+
+@login_required
+@never_cache
+def appointments_view(request):
+    if request.method == 'POST' and request.POST.get('retry_appointment'):
+        try:
+            appointment_id = int(request.POST['retry_appointment'])
+        except (ValueError, TypeError):
+            raise Http404
+        appointment = get_object_or_404(Appointment, pk=appointment_id, user=request.user)
+        if appointment.email_status == 'failed':
+            send_appointment_email(appointment)
+        _appointment_delivery_message(request, appointment)
+        return redirect('appointments')
+    initial = {'doctor_email': request.GET.get('doctor', '')}
+    if request.method == 'GET' and request.GET.get('report'):
+        try:
+            record_id = int(request.GET['report'])
+        except (ValueError, TypeError):
+            raise Http404
+        record = get_object_or_404(PredictionRecord, pk=record_id, user=request.user)
+        initial = {'report': record, 'reason': f'Follow-up after {record.get_disease_display()} screening'}
+        initial['doctor_email'] = request.GET.get('doctor', '')
+    form = AppointmentForm(request.POST or None, user=request.user, initial=initial)
+    if request.method == 'POST' and form.is_valid():
+        contact = form.contacts[form.cleaned_data['doctor_email']]
+        appointment, created = Appointment.objects.get_or_create(
+            request_token=form.cleaned_data['request_token'], defaults={
+                'user': request.user, 'doctor_name': contact['name'], 'doctor_email': contact['email'],
+                'report': form.cleaned_data['report'], 'reason': form.cleaned_data['reason'],
+                'preferred_date': form.cleaned_data['preferred_date'], 'notes': form.cleaned_data['notes'],
+            })
+        if appointment.user_id != request.user.pk:
+            raise Http404
+        if created:
+            send_appointment_email(appointment)
+            Notification.objects.create(user=request.user, title='Appointment request saved',
+                message=f'Request to {appointment.doctor_name} for {appointment.preferred_date:%Y-%m-%d}. '
+                        'Awaiting confirmation from the contact.')
+        _appointment_delivery_message(request, appointment)
+        return redirect('appointments')
+    return render(request, 'core/dashboard/appointments.html', {
+        'form': form, 'appointments': Appointment.objects.filter(user=request.user).select_related('report'),
+        'has_reports': PredictionRecord.objects.filter(user=request.user).exists(),
+    })
 
 
 @login_required
@@ -156,6 +193,17 @@ def prediction_report(request, record_id=None):
         'combined': record_id is None,
         'generated_at': timezone.now(),
     })
+
+
+@login_required
+@never_cache
+def prediction_report_pdf(request, record_id):
+    from .report_pdf import build_screening_pdf
+    record = get_object_or_404(PredictionRecord, pk=record_id, user=request.user)
+    response = HttpResponse(build_screening_pdf(record), content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="AHM-screening-report-{record.pk}.pdf"'
+    response['X-Content-Type-Options'] = 'nosniff'
+    return response
 
 
 @login_required
@@ -310,7 +358,7 @@ def doctors(request):
     doctors = DOCTORS
     if speciality != 'all':
         doctors = [d for d in DOCTORS if speciality.lower() in d['specialty'].lower()]
-    return render(request, 'core/wellness/doctors.html', {'doctors': doctors, 'speciality': speciality})
+    return render(request, 'core/wellness/doctors.html', {'doctors': doctors, 'speciality': speciality, 'test_contacts': TEST_CONTACTS})
 
 
 @login_required

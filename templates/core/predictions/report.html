@@ -22,8 +22,12 @@
   <section class="report-check">
     <div class="report-check-heading"><h2>{{ item.record.get_disease_display }}</h2><span>Report #{{ item.record.pk }} &middot; {{ item.record.created_at|date:'M d, Y H:i T' }}</span></div>
     <dl class="report-scores"><div><dt>Risk level</dt><dd>{{ item.record.risk_level }}</dd></div><div><dt>Model score</dt><dd>{{ item.score|floatformat:2 }}%</dd></div></dl>
+    <div class="report-booking-actions">
+      <a class="btn btn-primary" href="{% url 'appointments' %}?report={{ item.record.pk }}">Book an appointment</a>
+      <a class="btn btn-outline-primary" href="{% url 'prediction_report_pdf' item.record.pk %}">Download this PDF</a>
+    </div>
     <h3>Saved guidance</h3><p>{{ item.record.recommendation|default:'No guidance saved for this check.' }}</p>
-    {% include 'core/predictions/doctor_support.html' with support=item.doctor_support %}
+    {% include 'core/predictions/doctor_support.html' with support=item.doctor_support record=item.record %}
     <h3>Information used</h3>
     <dl class="report-inputs">{% for label, value in item.inputs %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% empty %}<p>No inputs were saved for this check.</p>{% endfor %}</dl>
   </section>

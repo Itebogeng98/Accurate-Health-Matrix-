@@ -3,6 +3,7 @@ from . import views
 from . import journey_views
 
 urlpatterns = [
+    path('dashboard/reports/<int:record_id>/pdf/', views.prediction_report_pdf, name='prediction_report_pdf'),
     path('', views.home, name='home'),
     path('predict/stroke/', views.stroke_predict, name='stroke_predict'),
     path('predict/lung-cancer/', views.lung_predict, name='lung_predict'),

@@ -135,3 +135,25 @@ The new models are DailyCheckIn, PersonalGoal, and GoalProgress under the core a
 ```powershell
 .\env\Scripts\python.exe manage.py test apps.core.tests --settings=config.test_settings --noinput
 ```
+
+
+## Appointment requests with emailed PDF reports
+
+After a stroke or lung screening, select **Book an appointment**. The same action is available on saved reports and dashboard report rows. Choose a listed contact email, select your saved report, choose a preferred date, and agree to share the report. The request email attaches a branded PDF with the screening inputs, percentage score, saved guidance, logo, and academic disclaimer. Replies go to the patient's account email.
+
+Only contacts with an email are offered. The two developer addresses are explicitly marked as test contacts; they are not clinical services. Directory listings do not provide live calendar availability. A request stays pending until the contact confirms arrangements directly.
+
+For another installation:
+
+```powershell
+.\env\Scripts\python.exe -m pip install -r requirements/base.txt
+.\env\Scripts\python.exe manage.py migrate accounts
+```
+
+Configure `SENDGRID_API_KEY` and a SendGrid-verified `DEFAULT_FROM_EMAIL` in `.env`. Set `EMAIL_BACKEND=apps.core.email_backend.SendGridAPIBackend`. Legacy `summit.email_backend.SendGridAPIBackend` settings and SendGrid SMTP settings are mapped to this project's HTTPS backend when credentials exist. Credentials are never embedded in source. Appointment sending is synchronous so acceptance or failure can be shown accurately.
+
+The history distinguishes provider acceptance from confirmed booking. Failed sends can be retried without creating a second booking. Timeouts or interrupted sends remain unconfirmed and are not automatically resent. Duplicate submission tokens prevent repeat sends. Report downloads and attachments are restricted to the signed-in patient's records.
+
+```powershell
+.\env\Scripts\python.exe manage.py test apps.core.tests.test_appointments apps.core.tests.test_regression apps.core.tests.test_doctor_support --settings=config.test_settings --noinput
+```

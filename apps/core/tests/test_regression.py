@@ -1,6 +1,7 @@
 import json
 import importlib
 import re
+import uuid
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock, patch
@@ -61,6 +62,7 @@ class ArchitectureTests(SimpleTestCase):
             ['accounts/users/activity/', 'activity_log'],
             ['accounts/users/<int:user_id>/<str:action>/', 'manage_user'],
             ['dashboard/reports/latest/', 'combined_report'],
+            ['dashboard/reports/<int:record_id>/pdf/', 'prediction_report_pdf'],
             ['dashboard/reports/<int:record_id>/', 'prediction_report'],
             ['dashboard/journey/', 'health_timeline'],
             ['dashboard/check-in/', 'daily_checkin'],
@@ -75,7 +77,10 @@ class ArchitectureTests(SimpleTestCase):
             model._meta.label_lower: {
                 'table': model._meta.db_table,
                 'fields': [str(field.deconstruct()[1:]) for field in
-                           model._meta.local_fields + model._meta.local_many_to_many],
+                           model._meta.local_fields + model._meta.local_many_to_many
+                           if not (model is Appointment and field.name in {
+                               'doctor_name', 'doctor_email', 'email_status', 'email_sent_at',
+                               'report', 'request_token'})],
             } for model in apps.get_models() if model._meta.label_lower in baseline['models']
         }
         # Callable defaults include process-specific addresses in repr().
@@ -280,7 +285,10 @@ class WorkflowTests(TestCase):
 
     def test_appointment_notification_and_profile_updates(self):
         self.client.force_login(self.user)
+        record = PredictionRecord.objects.create(user=self.user, disease='stroke', probability=.43)
         self.assertRedirects(self.client.post(reverse('appointments'), {
+            'doctor_email': 'ie.sebapu@gmail.com', 'report': record.pk,
+            'share_report': 'on', 'request_token': str(uuid.uuid4()),
             'reason': 'Follow-up', 'preferred_date': '2027-01-01', 'notes': 'Test',
         }), reverse('appointments'))
         self.assertEqual(Appointment.objects.get(user=self.user).status, 'pending')
